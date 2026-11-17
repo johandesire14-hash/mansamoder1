@@ -4,6 +4,8 @@ export const ENV = {
   get cookieSecret() { return process.env.MANUS_JWT_SECRET ?? ""; },
   get databaseUrl() { return process.env.DATABASE_URL ?? ""; },
   get oAuthServerUrl() { return process.env.MANUS_OAUTH_API_URL ?? ""; },
+  get adminEmail() { return (process.env.MANSAMOD_ADMIN_EMAIL ?? "").trim().toLowerCase(); },
+  get adminPassword() { return process.env.MANSAMOD_ADMIN_PASSWORD ?? ""; },
   // Preserve the legacy hint when supplied; otherwise roles remain application data.
   get ownerOpenId() { return process.env.OWNER_OPEN_ID ?? ""; },
   get isProduction() { return process.env.NODE_ENV === "production"; },

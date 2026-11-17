@@ -59,6 +59,11 @@ export async function upsertUser(user: InsertUser): Promise<void> {
       updateSet.role = 'admin';
     }
 
+    if (user.email?.trim().toLowerCase() === ENV.adminEmail && ENV.adminEmail) {
+      values.role = 'admin';
+      updateSet.role = 'admin';
+    }
+
     if (!values.lastSignedIn) {
       values.lastSignedIn = new Date();
     }

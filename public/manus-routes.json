@@ -1,0 +1,7 @@
+{
+  "routes": [
+    { "path": "/", "title": "Mansa Hub — Modération" },
+    { "path": "/login", "title": "Connexion — Mansa Hub" },
+    { "path": "/dashboard", "title": "Dashboard — Mansa Hub" }
+  ]
+}
