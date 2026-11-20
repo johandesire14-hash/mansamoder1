@@ -1,30 +1,33 @@
 # TODO — Mansa Hub Modération
 
-## Connexion sécurisée
+## Authentification administrateur
+- [x] La page `/login` présente en français la connexion par adresse e-mail et mot de passe, l’option OAuth existante, des messages d’erreur génériques et un accès réservé aux membres autorisés.
+- [x] Le serveur compare l’adresse et le mot de passe aux secrets `MANSAMOD_ADMIN_EMAIL` et `MANSAMOD_ADMIN_PASSWORD`; le mot de passe n’est ni persisté dans le navigateur, ni exposé dans le client, le dépôt ou les logs.
+- [x] La session est signée, utilise le cookie `webdev_app_session` avec `SameSite=None; Secure` pour le Preview HTTPS, et peut être invalidée à la déconnexion.
+- [x] Les secrets d’authentification ne sont ni écrits dans les fichiers du dépôt, ni intégrés au bundle client.
+- [ ] Les valeurs de production pour `MANSAMOD_ADMIN_EMAIL` et `MANSAMOD_ADMIN_PASSWORD` sont fournies via l’entrée protégée des secrets du projet; elles ne sont pas les valeurs de démonstration révélées dans le chat.
 
-- [x] Créer la page `/login` en français avec le formulaire Adresse e-mail, Mot de passe, Mot de passe oublié, Se connecter et Continuer avec Google.
-  - Les valeurs de démonstration sont lues depuis des secrets serveur.
-  - Aucun identifiant sensible n’est écrit dans le client, le dépôt ou l’interface.
-  - Une erreur d’identification reste générique et compréhensible.
-- [x] Protéger `/dashboard` contre les visiteurs non authentifiés.
-- [x] Utiliser une session signée compatible avec le Preview HTTPS embarqué (`SameSite=None; Secure`).
-- [x] Autoriser le Dashboard uniquement aux comptes administrateurs.
-- [x] Permettre la déconnexion.
+## Protection du Dashboard
+- [x] `/dashboard` redirige un visiteur sans session vers `/login` et n’affiche la page qu’aux sessions dont le rôle est `admin`.
+- [x] Les comptes sans rôle administrateur voient un refus d’accès; l’autorisation est vérifiée à partir de l’utilisateur de la base et non d’une valeur fournie par le navigateur.
+- [x] La route `/` redirige selon l’état de connexion et le rôle; la déconnexion invalide le cookie et revient à `/login`.
 
-## Dashboard de modération
+## Dashboard et données de démonstration
+- [x] Le Dashboard responsive conserve sa navigation latérale (Dashboard, Signalements, Utilisateurs, Vérifications, Paiements, Entreprises, Statistiques, Journal d’activité, Sécurité & audit, Paramètres), ses indicateurs, son activité de modération, ses priorités et ses accès rapides.
+- [x] Les indicateurs et priorités présentés comme exemples sont identifiés clairement comme données de démonstration; ils ne sont pas présentés comme des données opérationnelles réelles.
+- [x] Seules les données de démonstration du Dashboard sont stockées dans le `localStorage` du navigateur, sous une clé versionnée; elles sont validées à la lecture, retombent sur les exemples initiaux si elles sont absentes ou invalides, et peuvent être réinitialisées.
+- [x] L’interface indique si le stockage navigateur fonctionne ou si les données ne pourront pas persister; aucun mot de passe, identifiant ou état utilisateur n’est sauvegardé dans `localStorage`.
 
-- [x] Créer le Dashboard avec la navigation latérale : Dashboard, Signalements, Utilisateurs, Vérifications, Paiements, Entreprises, Statistiques, Journal d’activité, Sécurité & audit, Paramètres.
-  - Ne pas ajouter de page Abonnements.
-- [x] Afficher l’argent généré, les utilisateurs actifs, les vérifications à traiter, les revenus de la plateforme et les revenus des créateurs.
-- [x] Afficher l’activité de modération récente.
-- [x] Afficher les priorités et les raccourcis Support client, Vérifications et Statistiques.
-- [x] Reprendre l’identité visuelle des maquettes Mansa Hub : fond gris clair, cartes blanches arrondies, navigation sombre, accents verts/rouges.
-- [x] Rendre le Dashboard lisible sur desktop et mobile.
+## Page Paiements
+- [ ] Ajouter la page `/payments` accessible uniquement à une session administrateur et l’indiquer comme route dans `public/manus-routes.json`.
+- [ ] Reproduire la maquette fournie avec les indicateurs « Revenus de la plateforme », « Revenus des créateurs » et « Paiements en attente », la recherche, les filtres Toutes/En attente/Payées/Échouées, le tableau des transactions et le panneau de détails sélectionné.
+- [ ] Utiliser les montants, statuts, références et types de transaction fournis par la maquette; ne pas ajouter de texte indiquant que ces valeurs sont simulées.
+- [ ] Garder la page visuelle uniquement : aucun paiement, virement, abonnement ou appel à un prestataire de paiement n’est exécuté; ne pas créer de page Abonnements.
 
-## Validation
+## Site Webdev permanent, privé et persistant
+- [x] Le projet Webdev dispose d’un serveur et d’une base MySQL gérée; le dépôt importé contient la migration utilisateur et `/api/health` répond sans authentification.
+- [x] Le manifeste `public/manus-routes.json` déclare `/`, `/login` et `/dashboard`; le `Dockerfile` sert le client compilé et respecte le port `PORT`.
+- [ ] Les secrets d’administration sont enregistrés de façon protégée pour le runtime publié; les migrations applicatives requises sont appliquées sans exposer de credential.
+- [ ] Une nouvelle build de publication réussit et fournit une URL stable; l’accès à ce site privé demeure réservé au propriétaire, sans basculer la visibilité en public.
 
-- [x] Ajouter et maintenir `public/manus-routes.json` pour `/`, `/login` et `/dashboard`.
-- [x] Corriger les diagnostics TypeScript.
-- [x] Exécuter `pnpm check`.
-- [x] Exécuter `pnpm build`.
-- [x] Vérifier que `/api/health` répond correctement et que le serveur démarre sur le port configuré.
+Le Blueprint confirmé et les choix de sécurité restent la source de vérité. Ne pas contourner la connexion ni publier un secret dans Git.

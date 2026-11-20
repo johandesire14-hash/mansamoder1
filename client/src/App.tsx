@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { useAuth } from "./_core/hooks/useAuth";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import Payments from "./pages/Payments";
 
 function LoadingScreen() {
   return (
@@ -18,7 +19,7 @@ function LoadingScreen() {
   );
 }
 
-function AccessGuard() {
+function AccessGuard({ page = "dashboard" }: { page?: "dashboard" | "payments" }) {
   const { user, loading } = useAuth();
 
   if (loading) return <LoadingScreen />;
@@ -36,7 +37,7 @@ function AccessGuard() {
     );
   }
 
-  return <Dashboard />;
+  return page === "payments" ? <Payments /> : <Dashboard />;
 }
 
 function HomeRedirect() {
@@ -49,7 +50,12 @@ function Router() {
   return (
     <Switch>
       <Route path="/login" component={Login} />
-      <Route path="/dashboard" component={AccessGuard} />
+      <Route path="/dashboard">
+        <AccessGuard page="dashboard" />
+      </Route>
+      <Route path="/payments">
+        <AccessGuard page="payments" />
+      </Route>
       <Route path="/" component={HomeRedirect} />
       <Route path="/404">
         <Redirect to="/login" />
