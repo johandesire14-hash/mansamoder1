@@ -7,6 +7,7 @@ import { useAuth } from "./_core/hooks/useAuth";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Payments from "./pages/Payments";
+import Users from "./pages/Users";
 
 function LoadingScreen() {
   return (
@@ -19,7 +20,7 @@ function LoadingScreen() {
   );
 }
 
-function AccessGuard({ page = "dashboard" }: { page?: "dashboard" | "payments" }) {
+function AccessGuard({ page = "dashboard" }: { page?: "dashboard" | "payments" | "users" }) {
   const { user, loading } = useAuth();
 
   if (loading) return <LoadingScreen />;
@@ -37,7 +38,9 @@ function AccessGuard({ page = "dashboard" }: { page?: "dashboard" | "payments" }
     );
   }
 
-  return page === "payments" ? <Payments /> : <Dashboard />;
+  if (page === "payments") return <Payments />;
+  if (page === "users") return <Users />;
+  return <Dashboard />;
 }
 
 function HomeRedirect() {
@@ -55,6 +58,9 @@ function Router() {
       </Route>
       <Route path="/payments">
         <AccessGuard page="payments" />
+      </Route>
+      <Route path="/users">
+        <AccessGuard page="users" />
       </Route>
       <Route path="/" component={HomeRedirect} />
       <Route path="/404">

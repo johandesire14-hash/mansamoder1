@@ -19,14 +19,21 @@
 - [x] L’interface indique si le stockage navigateur fonctionne ou si les données ne pourront pas persister; aucun mot de passe, identifiant ou état utilisateur n’est sauvegardé dans `localStorage`.
 
 ## Page Paiements
-- [ ] Ajouter la page `/payments` accessible uniquement à une session administrateur et l’indiquer comme route dans `public/manus-routes.json`.
-- [ ] Reproduire la maquette fournie avec les indicateurs « Revenus de la plateforme », « Revenus des créateurs » et « Paiements en attente », la recherche, les filtres Toutes/En attente/Payées/Échouées, le tableau des transactions et le panneau de détails sélectionné.
-- [ ] Utiliser les montants, statuts, références et types de transaction fournis par la maquette; ne pas ajouter de texte indiquant que ces valeurs sont simulées.
-- [ ] Garder la page visuelle uniquement : aucun paiement, virement, abonnement ou appel à un prestataire de paiement n’est exécuté; ne pas créer de page Abonnements.
+- [x] Ajouter la page `/payments` accessible uniquement à une session administrateur et l’indiquer comme route dans `client/public/manus-routes.json`.
+- [x] Reproduire la maquette fournie avec les indicateurs « Revenus de la plateforme », « Revenus des créateurs » et « Paiements en attente », la recherche, les filtres Toutes/En attente/Payées/Échouées, le tableau des transactions et le panneau de détails sélectionné.
+- [x] Utiliser les montants, statuts, références et types de transaction fournis par la maquette; ne pas ajouter de texte indiquant que ces valeurs sont simulées.
+- [x] Garder la page visuelle uniquement : aucun paiement, virement, abonnement ou appel à un prestataire de paiement n’est exécuté; ne pas créer de page Abonnements.
+
+## Page Utilisateurs
+- [x] Ajouter la page `/users` accessible uniquement à une session administrateur et l’indiquer dans `client/public/manus-routes.json`.
+- [x] Reproduire la maquette avec les onglets Tous (16 815), Actifs (14 230), Suspendus (412) et Vérifiés (12 580), le champ de recherche, le bouton Filtres et le tri « Plus récents ».
+- [ ] Afficher la table Utilisateur, Email, Inscription, Activité, Statut et Actions; reprendre les dix profils et statuts montrés dans la maquette, puis afficher le profil de l’utilisateur sélectionné avec vérification, date d’inscription, e-mail, rôle, entreprise, localisation, dernière activité, signalements et abonnés. La table et le profil sont présents; les profils/statuts exacts restent à recaler à partir de la capture originale, absente des fichiers disponibles lors de cette reprise.
+- [x] Garder les enregistrements utilisateurs en mémoire côté client uniquement : ne pas modifier la base, appeler un service externe, utiliser `localStorage` pour ces enregistrements, ni afficher de mention indiquant qu’ils sont simulés.
+- [x] Reproduire les actions visibles « Voir le profil », « Suspendre » et « Ajouter une note » sans créer de page Abonnements.
 
 ## Site Webdev permanent, privé et persistant
 - [x] Le projet Webdev dispose d’un serveur et d’une base MySQL gérée; le dépôt importé contient la migration utilisateur et `/api/health` répond sans authentification.
-- [x] Le manifeste `public/manus-routes.json` déclare `/`, `/login` et `/dashboard`; le `Dockerfile` sert le client compilé et respecte le port `PORT`.
+- [x] Le manifeste `client/public/manus-routes.json` déclare `/`, `/login`, `/dashboard`, `/payments` et `/users`; le `Dockerfile` sert le client compilé et respecte le port `PORT`.
 - [ ] Les secrets d’administration sont enregistrés de façon protégée pour le runtime publié; les migrations applicatives requises sont appliquées sans exposer de credential.
 - [ ] Une nouvelle build de publication réussit et fournit une URL stable; l’accès à ce site privé demeure réservé au propriétaire, sans basculer la visibilité en public.
 
