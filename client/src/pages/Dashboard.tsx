@@ -8,6 +8,7 @@ import {
   ChevronDown,
   ChevronRight,
   CircleDollarSign,
+  CreditCard,
   FileCheck2,
   Flag,
   Headphones,
@@ -39,6 +40,7 @@ const navItems = [
   { label: "Vérifications", icon: FileCheck2 },
   { label: "Paiements", icon: WalletCards },
   { label: "Entreprises", icon: Building2 },
+  { label: "Abonnements", icon: CreditCard },
   { label: "Statistiques", icon: BarChart3 },
   { label: "Journal d’activité", icon: Activity },
   { label: "Sécurité & audit", icon: Shield },
@@ -145,7 +147,7 @@ export default function Dashboard() {
             <p className="mt-2 text-xs leading-5 text-white/60">
               Pour les utilisateurs, contacter l’équipe de maintenance.
             </p>
-            <button className="mt-4 flex items-center gap-2 text-xs font-bold text-white">
+            <button type="button" onClick={() => setLocation("/support")} className="mt-4 flex items-center gap-2 text-xs font-bold text-white">
               Ouvrir la file <ChevronRight className="size-3.5" />
             </button>
           </div>
@@ -333,7 +335,7 @@ export default function Dashboard() {
                 />
                 <QuickAction icon={BarChart3} label="Statistiques" count="Voir" tone="green" />
                 <QuickAction icon={Shield} label="Sécurité & audit" count="" tone="gray" />
-                <QuickAction icon={Headphones} label="Support client" count="12" tone="dark" />
+                <QuickAction icon={Headphones} label="Support client" count="12" tone="dark" onClick={() => setLocation("/support")} />
               </div>
             </div>
           </section>
@@ -387,11 +389,13 @@ function QuickAction({
   label,
   count,
   tone,
+  onClick,
 }: {
   icon: typeof FileCheck2;
   label: string;
   count: string;
   tone: "amber" | "green" | "gray" | "dark";
+  onClick?: () => void;
 }) {
   const styles = {
     amber: "bg-[#fff7e8] text-[#bb7d16]",
@@ -401,7 +405,7 @@ function QuickAction({
   };
 
   return (
-    <button className={`flex items-center gap-2 rounded-xl px-3.5 py-2.5 text-xs font-semibold ${styles[tone]}`}>
+    <button type="button" onClick={onClick} className={`flex items-center gap-2 rounded-xl px-3.5 py-2.5 text-xs font-semibold ${styles[tone]}`}>
       <Icon className="size-4" />
       {label}
       {count && <span className="rounded-full bg-white/70 px-1.5 py-0.5 text-[10px]">{count}</span>}

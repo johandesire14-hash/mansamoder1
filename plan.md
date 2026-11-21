@@ -2,12 +2,13 @@
 
 ## Périmètre du premier lot
 
-Construire un back-office séparé avec quatre écrans fonctionnels :
+Construire un back-office séparé avec cinq écrans fonctionnels :
 
 1. une page de connexion réservée à l’équipe Mansa, avec adresse e-mail/mot de passe et bouton Google ;
 2. un Dashboard de modération inspiré de la maquette validée.
 3. une page Paiements réservée aux administrateurs, selon la maquette fournie : indicateurs de revenus, recherche, filtres d’état, liste des transactions et panneau de détails.
-4. une page Utilisateurs réservée aux administrateurs, selon la maquette fournie : filtres par statut, recherche, liste triable, filtres complémentaires et panneau de profil sélectionné.
+4. une page Utilisateurs réservée aux administrateurs, selon la maquette fournie : filtres par statut, recherche, liste triable, filtres complémentaires et panneau de profil sélectionné ;
+5. une page Support client réservée aux administrateurs, selon la maquette fournie : indicateurs, recherche, filtres de statut, demandes triables et conversation avec réponse et résolution.
 
 Les identifiants de démonstration sont stockés uniquement dans les secrets `MANSAMOD_ADMIN_EMAIL` et `MANSAMOD_ADMIN_PASSWORD`. Aucune valeur sensible ne doit apparaître dans le dépôt, dans le bundle client, dans l’interface ou dans les logs.
 
@@ -17,7 +18,8 @@ Les identifiants de démonstration sont stockés uniquement dans les secrets `MA
 - `client/src/pages/Dashboard.tsx` : vue protégée, navigation latérale et indicateurs du Dashboard.
 - `client/src/pages/Payments.tsx` : vue Paiements protégée, indicateurs, transactions filtrables et détails de la transaction sélectionnée; valeurs locales de présentation, sans traitement de paiement.
 - `client/src/pages/Users.tsx` : vue Utilisateurs protégée, recherche, filtres, liste de comptes et panneau de profil.
-- `client/src/App.tsx` : routes `/login`, `/dashboard`, `/payments` et `/users`, protégées par le rôle administrateur et redirection contrôlée selon l’état de session.
+- `client/src/pages/Support.tsx` : vue Support protégée, liste de tickets filtrable et triable, conversation sélectionnée, réponse et résolution en mémoire côté client uniquement.
+- `client/src/App.tsx` : routes `/login`, `/dashboard`, `/payments`, `/users` et `/support`, protégées par le rôle administrateur et redirection contrôlée selon l’état de session.
 - `server/routers.ts` : procédures `auth.login`, `auth.me` et `auth.logout` ; login e-mail validé côté serveur.
 - `server/_core/context.ts` et `server/_core/sdk.ts` : session applicative réutilisant le cookie signé du starter.
 - `server/db.ts` et `server/_core/env.ts` : persistance du compte autorisé et lecture des secrets serveur.
@@ -43,7 +45,7 @@ Le fond gris très clair sépare le chrome de la plateforme des cartes de donné
 ### Composition
 
 Le Dashboard utilise une navigation fixe à gauche, un en-tête de travail compact et une grille de cartes. La page de connexion abandonne la navigation pour concentrer l’attention sur l’identification et la sécurité.
-Les pages Paiements et Utilisateurs reprennent la même navigation latérale et la composition à deux colonnes des maquettes : liste/table à gauche, détail sélectionné à droite; la mise en page se replie en une colonne sur petit écran.
+Les pages Paiements, Utilisateurs et Support reprennent la même navigation latérale et la composition à deux colonnes des maquettes : liste/table à gauche, détail sélectionné à droite; la mise en page se replie en une colonne sur petit écran.
 
 ### Typographie et ton
 
@@ -53,15 +55,16 @@ Utiliser une sans-serif système lisible, avec titres noirs affirmés, libellés
 
 La première version affiche des données de démonstration : argent généré, utilisateurs actifs, vérifications à traiter, revenus créateurs, activité récente, priorités et support. Ces seules données de démonstration sont lues et persistées dans le `localStorage` du navigateur, avec valeurs de repli, validation, indication de disponibilité et action de réinitialisation. Les données restent propres à l’appareil et au navigateur; aucune donnée d’authentification ou aucun mot de passe n’y est enregistré.
 La page Utilisateurs affiche des enregistrements de présentation en mémoire côté client uniquement : aucune donnée utilisateur n’est envoyée au serveur, sauvegardée en base ou persistée dans `localStorage`. L’interface n’ajoute pas de mention indiquant le caractère simulé de ces valeurs.
+La page Support conserve tickets, messages de conversation, réponses et changements de statut en mémoire côté client uniquement : aucune donnée de support n’est envoyée au serveur, sauvegardée en base ou persistée dans `localStorage`.
 
 ## Sécurité
 
 - la procédure de connexion compare les valeurs côté serveur ;
 - le cookie de session reste `SameSite=None; Secure` pour le Preview HTTPS embarqué ;
-- le Dashboard, Paiements et Utilisateurs vérifient l’utilisateur et le rôle `admin` via le garde d’accès existant ;
+- le Dashboard, Paiements, Utilisateurs et Support vérifient l’utilisateur et le rôle `admin` via le garde d’accès existant ;
 - le bouton Google utilise l’authentification Manus/OAuth du starter et le compte n’obtient l’accès admin que s’il est autorisé côté serveur ;
 - les erreurs affichées restent fixes et compréhensibles.
 
 ## Déploiement et validation
 
-Le projet utilise le serveur et la base gérés déjà activés. Avant livraison : diagnostic TypeScript, `pnpm check`, `pnpm build`, démarrage sur le port configuré, test des routes `/`, `/login`, `/dashboard`, `/payments`, `/users` et protection des pages d’administration sans session.
+Le projet utilise le serveur et la base gérés déjà activés. Avant livraison : diagnostic TypeScript, `pnpm check`, `pnpm build`, démarrage sur le port configuré, test des routes `/`, `/login`, `/dashboard`, `/payments`, `/users`, `/support` et protection des pages d’administration sans session.

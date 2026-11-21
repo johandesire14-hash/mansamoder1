@@ -13,7 +13,7 @@
 - [x] La route `/` redirige selon l’état de connexion et le rôle; la déconnexion invalide le cookie et revient à `/login`.
 
 ## Dashboard et données de démonstration
-- [x] Le Dashboard responsive conserve sa navigation latérale (Dashboard, Signalements, Utilisateurs, Vérifications, Paiements, Entreprises, Statistiques, Journal d’activité, Sécurité & audit, Paramètres), ses indicateurs, son activité de modération, ses priorités et ses accès rapides.
+- [x] Le Dashboard responsive conserve sa navigation latérale (Dashboard, Signalements, Utilisateurs, Vérifications, Paiements, Entreprises, Abonnements, Statistiques, Journal d’activité, Sécurité & audit, Paramètres), ses indicateurs, son activité de modération, ses priorités et ses accès rapides.
 - [x] Les indicateurs et priorités présentés comme exemples sont identifiés clairement comme données de démonstration; ils ne sont pas présentés comme des données opérationnelles réelles.
 - [x] Seules les données de démonstration du Dashboard sont stockées dans le `localStorage` du navigateur, sous une clé versionnée; elles sont validées à la lecture, retombent sur les exemples initiaux si elles sont absentes ou invalides, et peuvent être réinitialisées.
 - [x] L’interface indique si le stockage navigateur fonctionne ou si les données ne pourront pas persister; aucun mot de passe, identifiant ou état utilisateur n’est sauvegardé dans `localStorage`.
@@ -31,9 +31,17 @@
 - [x] Garder les enregistrements utilisateurs en mémoire côté client uniquement : ne pas modifier la base, appeler un service externe, utiliser `localStorage` pour ces enregistrements, ni afficher de mention indiquant qu’ils sont simulés.
 - [x] Reproduire les actions visibles « Voir le profil », « Suspendre » et « Ajouter une note » sans créer de page Abonnements.
 
+## Page Support client
+- [x] Ajouter la page `/support` accessible uniquement à une session administrateur et l’indiquer dans `client/public/manus-routes.json`.
+- [x] Reproduire l’en-tête « Support client », son sous-titre « Demandes des utilisateurs vers l’équipe de maintenance » et les trois indicateurs « Nouveaux tickets » (18, +25 %), « En cours » (7, −12 %) et « Résolus aujourd’hui » (24, +33 %).
+- [x] Afficher la liste filtrable et triable des demandes récentes avec la recherche, les onglets Toutes/Nouvelles/En cours/Résolues et les colonnes Utilisateur, Sujet, Date, Priorité et Statut; reprendre les huit demandes visibles dans la maquette.
+- [x] Afficher la conversation du ticket sélectionné avec son identifiant, le demandeur, le sujet, l’horodatage, les messages, le champ de réponse et les actions « Répondre » et « Marquer comme résolu ».
+- [x] Garder les tickets, réponses et changements de statut en mémoire côté client uniquement : ne pas modifier la base, appeler un service de support externe ou utiliser `localStorage` pour ces données.
+- [x] Faire ouvrir `/support` depuis les cartes « Support client / Ouvrir la file » et le raccourci Support client présents dans l’espace administrateur.
+
 ## Site Webdev permanent, privé et persistant
 - [x] Le projet Webdev dispose d’un serveur et d’une base MySQL gérée; le dépôt importé contient la migration utilisateur et `/api/health` répond sans authentification.
-- [x] Le manifeste `client/public/manus-routes.json` déclare `/`, `/login`, `/dashboard`, `/payments` et `/users`; le `Dockerfile` sert le client compilé et respecte le port `PORT`.
+- [x] Le manifeste `client/public/manus-routes.json` déclare `/`, `/login`, `/dashboard`, `/payments`, `/users` et `/support`; le `Dockerfile` sert le client compilé et respecte le port `PORT`.
 - [ ] Les secrets d’administration sont enregistrés de façon protégée pour le runtime publié; les migrations applicatives requises sont appliquées sans exposer de credential.
 - [ ] Une nouvelle build de publication réussit et fournit une URL stable; l’accès à ce site privé demeure réservé au propriétaire, sans basculer la visibilité en public.
 

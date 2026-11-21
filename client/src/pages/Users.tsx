@@ -10,6 +10,7 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  CreditCard,
   Clock3,
   Eye,
   FileCheck2,
@@ -76,6 +77,7 @@ const navigation = [
   { label: "Vérifications", icon: FileCheck2 },
   { label: "Paiements", icon: WalletCards, path: "/payments" },
   { label: "Entreprises", icon: Building2 },
+  { label: "Abonnements", icon: CreditCard },
   { label: "Statistiques", icon: Activity },
   { label: "Journal d’activité", icon: CalendarDays },
   { label: "Sécurité & audit", icon: Shield },
@@ -176,7 +178,7 @@ export default function Users() {
             <div className="flex size-9 items-center justify-center rounded-xl bg-white/10"><Headphones className="size-5" /></div>
             <p className="mt-4 text-sm font-bold">Support client</p>
             <p className="mt-2 text-xs leading-5 text-white/70">Pour les utilisateurs, contacter l’équipe de maintenance.</p>
-            <button type="button" className="mt-4 flex items-center gap-2 text-xs font-bold text-white">Ouvrir la file <ChevronRight className="size-3.5" /></button>
+            <button type="button" onClick={() => setLocation("/support")} className="mt-4 flex items-center gap-2 text-xs font-bold text-white">Ouvrir la file <ChevronRight className="size-3.5" /></button>
           </div>
         </aside>
 

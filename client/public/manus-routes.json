@@ -19,6 +19,10 @@
     {
       "path": "/users",
       "title": "Utilisateurs — Mansa Hub"
+    },
+    {
+      "path": "/support",
+      "title": "Support client — Mansa Hub"
     }
   ]
 }
