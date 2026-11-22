@@ -79,7 +79,7 @@ const navigation = [
   { label: "Entreprises", icon: Building2 },
   { label: "Abonnements", icon: CreditCard },
   { label: "Statistiques", icon: Activity },
-  { label: "Journal d’activité", icon: CalendarDays },
+  { label: "Journal d’activité", icon: Clock3, path: "/activity" },
   { label: "Sécurité & audit", icon: Shield },
   { label: "Paramètres", icon: Settings },
 ];

@@ -42,7 +42,7 @@ const navItems = [
   { label: "Entreprises", icon: Building2 },
   { label: "Abonnements", icon: CreditCard },
   { label: "Statistiques", icon: BarChart3 },
-  { label: "Journal d’activité", icon: Activity },
+  { label: "Journal d’activité", icon: Activity, path: "/activity" },
   { label: "Sécurité & audit", icon: Shield },
   { label: "Paramètres", icon: Settings },
 ];
@@ -127,11 +127,11 @@ export default function Dashboard() {
             </button>
           </div>
           <nav className="mt-9 space-y-1.5" aria-label="Navigation principale">
-            {navItems.map(({ label, icon: Icon, active }) => (
+            {navItems.map(({ label, icon: Icon, active, path }) => (
               <button
                 key={label}
                 type="button"
-                onClick={() => { setMobileNav(false); if (label === "Paiements") setLocation("/payments"); if (label === "Utilisateurs") setLocation("/users"); }}
+                onClick={() => { setMobileNav(false); if (path) setLocation(path); else if (label === "Paiements") setLocation("/payments"); else if (label === "Utilisateurs") setLocation("/users"); }}
                 className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium transition ${active ? "bg-[#eef0f2] font-bold text-[#111827]" : "text-[#657184] hover:bg-[#f7f8f9] hover:text-[#273142]"}`}
               >
                 <Icon className="size-[18px]" />

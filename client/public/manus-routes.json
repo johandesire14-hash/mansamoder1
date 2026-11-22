@@ -23,6 +23,10 @@
     {
       "path": "/support",
       "title": "Support client — Mansa Hub"
+    },
+    {
+      "path": "/activity",
+      "title": "Journal d’activité — Mansa Hub"
     }
   ]
 }
