@@ -27,12 +27,19 @@
 - [x] Garder les signalements et changements de statut en mémoire côté client uniquement : ne pas modifier la base, appeler un service externe ou utiliser `localStorage` pour ces données.
 
 ## Page Entreprises
-- [x] Ajouter la page `/businesses` accessible uniquement à une session administrateur, l’indiquer dans `client/public/manus-routes.json` et relier les menus « Entreprises » des pages d’administration à cette route.
-- [x] Reproduire le titre « Entreprises », le sous-titre « Surveillez les entreprises, leurs performances et les risques associés », la recherche « Rechercher une entreprise ou un propriétaire… », le sélecteur FCFA et le filtre « Tous les statuts ».
-- [x] Afficher les dix entreprises de la maquette avec leur propriétaire et e-mail, statut KYC, statut de l’entreprise, nombre de produits, membres, volume brut (GMV), taux de remboursement et action de ligne.
-- [x] Ouvrir le panneau de Kora Academy par défaut avec son propriétaire, son e-mail, son statut « Active » et les onglets « Résumé & Métriques », « Produits » et « Dashboard Financier ».
-- [x] Afficher les quatre métriques visibles, les intégrations YouTube et Stripe indiquées comme connectées, la rétention de 72 h, le seuil minimum de 5 000 FCFA et les moyens de versement Orange Money, MTN Money, Wave et virement bancaire.
-- [x] Permettre la recherche, le filtrage, la sélection d’entreprise et les changements d’état uniquement en mémoire côté client; ne pas appeler YouTube, Stripe ou un service financier, modifier la base ou utiliser `localStorage` pour ces données.
+- [ ] Ajouter la page `/businesses` accessible uniquement à une session administrateur, l’indiquer dans `client/public/manus-routes.json` et relier les menus « Entreprises » des pages d’administration à cette route.
+- [ ] Reproduire le titre « Entreprises », le sous-titre « Surveillez les entreprises, leurs performances et les risques associés », la recherche « Rechercher une entreprise ou un propriétaire… », le sélecteur FCFA et le filtre « Tous les statuts ».
+- [ ] Afficher les dix entreprises de la maquette avec leur propriétaire et e-mail, statut KYC, statut de l’entreprise, nombre de produits, membres, volume brut (GMV), taux de remboursement et action de ligne.
+- [ ] Ouvrir le panneau de Kora Academy par défaut avec son propriétaire, son e-mail, son statut « Active » et les onglets « Résumé & Métriques », « Produits » et « Dashboard Financier ».
+- [ ] Afficher les quatre métriques visibles, les intégrations YouTube et Stripe indiquées comme connectées, la rétention de 72 h, le seuil minimum de 5 000 FCFA et les moyens de versement Orange Money, MTN Money, Wave et virement bancaire.
+- [ ] Permettre la recherche, le filtrage, la sélection d’entreprise et les changements d’état uniquement en mémoire côté client; ne pas appeler YouTube, Stripe ou un service financier, modifier la base ou utiliser `localStorage` pour ces données.
+
+## Page Vérifications
+- [x] Ajouter `/verifications` sous le garde administrateur, l’inscrire dans `client/public/manus-routes.json` et relier « Vérifications » à cette route depuis les menus administrateur.
+- [x] Reproduire l’en-tête « Vérifications », l’indicateur « Demandes de vérification » (47, +12 %), la période « 1 sept. 2024 - 30 sept. 2024 », la recherche globale et la recherche de demande.
+- [x] Afficher les filtres Toutes (47), Nouvelles (18), En cours (16), Approuvées (13), et les dix demandes visibles, avec demandeur, type, date de soumission, nombre de documents, statut et accès au dossier.
+- [x] Ouvrir le dossier d’Aminata K. par défaut avec ses informations, trois documents fournis et les actions de téléchargement visuelles, une note interne et les boutons « Approuver » et « Demander des informations ».
+- [x] Permettre la recherche, le filtrage, la sélection, l’ajout d’une note et la transition des statuts en mémoire uniquement; ne pas appeler de service externe ni téléverser ou persister des documents.
 
 ## Page Paiements
 - [x] Ajouter la page `/payments` accessible uniquement à une session administrateur et l’indiquer comme route dans `client/public/manus-routes.json`.
@@ -67,7 +74,7 @@
 
 ## Site Webdev permanent, privé et persistant
 - [x] Le projet Webdev dispose d’un serveur et d’une base MySQL gérée; le dépôt importé contient la migration utilisateur et `/api/health` répond sans authentification.
-- [x] Le manifeste `client/public/manus-routes.json` déclare `/`, `/login`, `/dashboard`, `/payments`, `/users`, `/support`, `/activity` et `/reports`; le `Dockerfile` sert le client compilé et respecte le port `PORT`.
+- [x] Le manifeste `client/public/manus-routes.json` déclare `/`, `/login`, `/dashboard`, `/payments`, `/users`, `/support`, `/activity`, `/reports`, `/businesses` et `/verifications`; le `Dockerfile` sert le client compilé et respecte le port `PORT`.
 - [ ] Les secrets d’administration sont enregistrés de façon protégée pour le runtime publié; les migrations applicatives requises sont appliquées sans exposer de credential.
 - [ ] Une nouvelle build de publication réussit et fournit une URL stable; l’accès à ce site privé demeure réservé au propriétaire, sans basculer la visibilité en public.
 

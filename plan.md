@@ -2,7 +2,7 @@
 
 ## Périmètre du premier lot
 
-Construire un back-office séparé avec huit écrans fonctionnels :
+Construire un back-office séparé avec neuf écrans fonctionnels :
 
 1. une page de connexion réservée à l’équipe Mansa, avec adresse e-mail/mot de passe et bouton Google ;
 2. un Dashboard de modération inspiré de la maquette validée.
@@ -12,6 +12,7 @@ Construire un back-office séparé avec huit écrans fonctionnels :
 6. un Journal d’activité réservé aux administrateurs, selon la maquette fournie : sessions visibles, journal d’audit consultable et exports CSV/JSON.
 7. une page Signalements réservée aux administrateurs, selon la maquette fournie : filtres par statut, recherche, liste récente des signalements et panneau de détails avec actions de traitement/résolution.
 8. une page Entreprises réservée aux administrateurs, selon la maquette fournie : recherche, filtres, indicateurs d’activité, tableau des entreprises et panneau de détails à onglets.
+9. une page Vérifications réservée aux administrateurs : indicateurs, filtres de demandes, liste avec documents et dossier sélectionné avec note interne et actions locales.
 
 Les identifiants de démonstration sont stockés uniquement dans les secrets `MANSAMOD_ADMIN_EMAIL` et `MANSAMOD_ADMIN_PASSWORD`. Aucune valeur sensible ne doit apparaître dans le dépôt, dans le bundle client, dans l’interface ou dans les logs.
 
@@ -25,7 +26,8 @@ Les identifiants de démonstration sont stockés uniquement dans les secrets `MA
 - `client/src/pages/ActivityLog.tsx` : sessions et événements d’audit présentés en mémoire côté client, recherche, filtres, détails et export CSV/JSON.
 - `client/src/pages/Reports.tsx` : vue Signalements protégée, filtres et recherche, tableau récent et panneau de détail avec changements de statut en mémoire côté client.
 - `client/src/pages/Businesses.tsx` : liste filtrable des entreprises et panneau d’entreprise avec résumé/métriques, produits et dashboard financier; changements d’état en mémoire côté client.
-- `client/src/App.tsx` : routes `/login`, `/dashboard`, `/payments`, `/users`, `/support`, `/activity`, `/reports` et `/businesses`, protégées par le rôle administrateur et redirection contrôlée selon l’état de session.
+- `client/src/pages/Verifications.tsx` : file de demandes de vérification filtrable, pièces fournies, dossier détaillé et transitions locales approuver/demander des informations.
+- `client/src/App.tsx` : routes `/login`, `/dashboard`, `/payments`, `/users`, `/support`, `/activity`, `/reports`, `/businesses` et `/verifications`, protégées par le rôle administrateur et redirection contrôlée selon l’état de session.
 - `server/routers.ts` : procédures `auth.login`, `auth.me` et `auth.logout` ; login e-mail validé côté serveur.
 - `server/_core/context.ts` et `server/_core/sdk.ts` : session applicative réutilisant le cookie signé du starter.
 - `server/db.ts` et `server/_core/env.ts` : persistance du compte autorisé et lecture des secrets serveur.
@@ -65,12 +67,13 @@ La page Support client conserve les tickets, réponses et changements de statut 
 Le Journal d’activité conserve ses sessions et événements de présentation en mémoire côté client uniquement. Les exports sont générés dans le navigateur; les actions de révocation ne changent pas les sessions d’authentification réelles et aucun registre persistant ou immuable n’est créé sans backend dédié. L’écran indique clairement ces limites afin de ne pas présenter l’aperçu local comme un dispositif de sécurité réel.
 La page Signalements conserve ses enregistrements et changements de statut en mémoire côté client uniquement; aucun signalement n’est envoyé au serveur, sauvegardé en base ou persisté dans `localStorage`.
 La page Entreprises conserve ses enregistrements, connexions d’intégration affichées et changements de statut en mémoire côté client uniquement; aucune entreprise n’est envoyée au serveur, aucun service YouTube/Stripe n’est appelé, et aucune donnée n’est sauvegardée en base ou dans `localStorage`.
+La page Vérifications conserve les demandes, notes et transitions de statut en mémoire côté client; aucun document réel n’est téléchargé et aucune donnée n’est envoyée à un service externe ou sauvegardée en base/localStorage.
 
 ## Sécurité
 
 - la procédure de connexion compare les valeurs côté serveur ;
 - le cookie de session reste `SameSite=None; Secure` pour le Preview HTTPS embarqué ;
-- le Dashboard, Paiements, Utilisateurs, Support client, Journal d’activité, Signalements et Entreprises vérifient l’utilisateur et le rôle `admin` via le garde d’accès existant ;
+- le Dashboard, Paiements, Utilisateurs, Support client, Journal d’activité, Signalements, Entreprises et Vérifications vérifient l’utilisateur et le rôle `admin` via le garde d’accès existant ;
 - le bouton Google utilise l’authentification Manus/OAuth du starter et le compte n’obtient l’accès admin que s’il est autorisé côté serveur ;
 - les erreurs affichées restent fixes et compréhensibles.
 

@@ -131,7 +131,7 @@ export default function Dashboard() {
               <button
                 key={label}
                 type="button"
-                onClick={() => { setMobileNav(false); if (label === "Signalements") setLocation("/reports"); if (label === "Paiements") setLocation("/payments"); if (label === "Utilisateurs") setLocation("/users"); if (label === "Journal d’activité") setLocation("/activity"); if (label === "Entreprises") setLocation("/businesses"); }}
+                onClick={() => { setMobileNav(false); if (label === "Signalements") setLocation("/reports"); if (label === "Paiements") setLocation("/payments"); if (label === "Utilisateurs") setLocation("/users"); if (label === "Journal d’activité") setLocation("/activity"); if (label === "Entreprises") setLocation("/businesses"); if (label === "Vérifications") setLocation("/verifications"); }}
                 className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium transition ${active ? "bg-[#eef0f2] font-bold text-[#111827]" : "text-[#657184] hover:bg-[#f7f8f9] hover:text-[#273142]"}`}
               >
                 <Icon className="size-[18px]" />

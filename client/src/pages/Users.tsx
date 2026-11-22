@@ -74,7 +74,7 @@ const navigation = [
   { label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
   { label: "Signalements", icon: Flag, path: "/reports" },
   { label: "Utilisateurs", icon: UsersIcon, path: "/users" },
-  { label: "Vérifications", icon: FileCheck2 },
+  { label: "Vérifications", icon: FileCheck2, path: "/verifications" },
   { label: "Paiements", icon: WalletCards, path: "/payments" },
   { label: "Entreprises", icon: Building2, path: "/businesses" },
   { label: "Abonnements", icon: CreditCard },
