@@ -88,12 +88,30 @@ function MetricCard({
   );
 }
 
+type DashboardPeriod = "Aujourd’hui" | "Cette semaine" | "Ce mois";
+
+const periodFactors: Record<DashboardPeriod, number> = { "Aujourd’hui": 0.04, "Cette semaine": 0.24, "Ce mois": 1 };
+const periodRanges: Record<DashboardPeriod, string> = { "Aujourd’hui": "30 sept. 2024", "Cette semaine": "24 sept. 2024 - 30 sept. 2024", "Ce mois": "1 sept. 2024 - 30 sept. 2024" };
+
+function scaleMetric(value: string, factor: number) {
+  const amount = Number(value.replace(/[^0-9]/g, ""));
+  const suffix = value.includes("$") ? " $" : "";
+  return `${new Intl.NumberFormat("fr-FR").format(Math.max(1, Math.round(amount * factor)))}${suffix}`;
+}
+
 export default function Dashboard() {
   const [, setLocation] = useLocation();
   const logoutMutation = trpc.auth.logout.useMutation({ onSuccess: () => setLocation("/login") });
   const [mobileNav, setMobileNav] = useState(false);
   const [demoData, setDemoData] = useState(loadDemoDashboardData);
   const [storageAvailable, setStorageAvailable] = useState(true);
+  const [period, setPeriod] = useState<DashboardPeriod>("Ce mois");
+  const [periodMenuOpen, setPeriodMenuOpen] = useState(false);
+  const [chartMenuOpen, setChartMenuOpen] = useState(false);
+  const [chartRange, setChartRange] = useState<"6 derniers jours" | "30 derniers jours">("6 derniers jours");
+  const factor = periodFactors[period];
+  const chartValues = chartRange === "30 derniers jours" ? demoData.chartBars.map((value) => Math.min(100, Math.round(value * 1.08))) : period === "Aujourd’hui" ? [20, 34, 27, 58, 46, 86] : period === "Cette semaine" ? demoData.chartBars.map((value) => Math.min(100, Math.round(value * 1.15))) : demoData.chartBars;
+  const chartLabels = period === "Aujourd’hui" ? ["08h", "10h", "12h", "14h", "16h", "18h"] : period === "Cette semaine" ? ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"] : ["S1", "S2", "S3", "S4", "S5", "S6"];
 
   useEffect(() => {
     setStorageAvailable(saveDemoDashboardData(demoData));
@@ -217,46 +235,44 @@ export default function Dashboard() {
 
           <div className="mt-7 flex flex-wrap items-center justify-between gap-3">
             <div className="flex gap-2">
-              <button className="rounded-full bg-white px-4 py-2 text-xs font-semibold text-[#273142] shadow-sm">
-                Aujourd’hui
-              </button>
-              <button className="rounded-full bg-white px-4 py-2 text-xs font-semibold text-[#273142] shadow-sm">
-                Cette semaine
-              </button>
-              <button className="rounded-full bg-[#6e7479] px-4 py-2 text-xs font-semibold text-white shadow-sm">
-                Ce mois
-              </button>
+              {(["Aujourd’hui", "Cette semaine", "Ce mois"] as DashboardPeriod[]).map((option) => (
+                <button key={option} type="button" aria-pressed={period === option} onClick={() => { setPeriod(option); setPeriodMenuOpen(false); }} className={`rounded-full px-4 py-2 text-xs font-semibold shadow-sm transition ${period === option ? "bg-[#6e7479] text-white" : "bg-white text-[#273142] hover:bg-[#f6f7f8]"}`}>
+                  {option}
+                </button>
+              ))}
             </div>
-            <button className="flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-xs font-semibold text-[#273142] shadow-sm">
-              <CalendarDays className="size-3.5" />1 sept. 2024 - 30 sept. 2024
-              <ChevronDown className="size-3.5" />
-            </button>
+            <div className="relative">
+              <button type="button" aria-expanded={periodMenuOpen} onClick={() => setPeriodMenuOpen((open) => !open)} className="flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-xs font-semibold text-[#273142] shadow-sm">
+                <CalendarDays className="size-3.5" />{periodRanges[period]}<ChevronDown className="size-3.5" />
+              </button>
+              {periodMenuOpen && <div className="absolute right-0 z-20 mt-2 w-48 rounded-xl border border-[#e7eaed] bg-white p-1.5 shadow-xl">{(["Aujourd’hui", "Cette semaine", "Ce mois"] as DashboardPeriod[]).map((option) => <button key={option} type="button" onClick={() => { setPeriod(option); setPeriodMenuOpen(false); }} className="w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-[#f5f6f7]">{option}</button>)}</div>}
+            </div>
           </div>
 
           <section className="mt-7 grid gap-4 xl:grid-cols-4">
             <MetricCard
               dark
               label="Argent généré"
-              value={demoData.generatedMoney}
+              value={scaleMetric(demoData.generatedMoney, factor)}
               trend={demoData.generatedMoneyTrend}
               icon={CircleDollarSign}
             />
             <MetricCard
               label="Utilisateurs actifs"
-              value={demoData.activeUsers}
+              value={scaleMetric(demoData.activeUsers, factor)}
               trend={demoData.activeUsersTrend}
               icon={Users}
             />
             <MetricCard
               label="Vérifications à traiter"
-              value={demoData.pendingVerifications}
+              value={scaleMetric(demoData.pendingVerifications, factor)}
               trend={demoData.pendingVerificationsTrend}
               icon={FileCheck2}
               accent="red"
             />
             <MetricCard
               label="Revenus des créateurs"
-              value={demoData.creatorRevenue}
+              value={scaleMetric(demoData.creatorRevenue, factor)}
               trend={demoData.creatorRevenueTrend}
               icon={Users}
             />
@@ -273,9 +289,7 @@ export default function Dashboard() {
                     Actions enregistrées sur les 6 derniers jours
                   </p>
                 </div>
-                <button className="flex items-center gap-1 rounded-full bg-[#f4f6f7] px-3 py-2 text-xs font-semibold text-[#425066]">
-                  6 derniers jours <ChevronDown className="size-3.5" />
-                </button>
+                <div className="relative"><button type="button" aria-expanded={chartMenuOpen} onClick={() => setChartMenuOpen((open) => !open)} className="flex items-center gap-1 rounded-full bg-[#f4f6f7] px-3 py-2 text-xs font-semibold text-[#425066]">{chartRange}<ChevronDown className="size-3.5" /></button>{chartMenuOpen && <div className="absolute right-0 z-20 mt-2 w-44 rounded-xl border border-[#e7eaed] bg-white p-1.5 shadow-xl">{(["6 derniers jours", "30 derniers jours"] as const).map((range) => <button key={range} type="button" onClick={() => { setChartRange(range); setChartMenuOpen(false); }} className="w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-[#f5f6f7]">{range}</button>)}</div>}</div>
               </div>
               <div className="mt-8 flex h-[205px] items-end gap-4 border-b border-[#edf0f2] px-4 sm:gap-8">
                 <div className="flex h-full flex-col justify-between py-1 text-[10px] text-[#9aa3af]">
@@ -286,14 +300,14 @@ export default function Dashboard() {
                   <span>0</span>
                 </div>
                 <div className="flex h-full flex-1 items-end justify-around gap-3 pb-0">
-                  {demoData.chartBars.map((height, index) => (
+                  {chartValues.map((height, index) => (
                     <div key={index} className="flex h-full flex-1 flex-col justify-end">
                       <div
                         className="mx-auto w-full max-w-[56px] rounded-t-xl bg-[#4a4c4e]"
                         style={{ height: `${height}%` }}
                       />
                       <span className="mt-3 text-center text-xs text-[#7d8795]">
-                        {["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"][index]}
+                        {chartRange === "30 derniers jours" ? ["S1", "S2", "S3", "S4", "S5", "S6"][index] : chartLabels[index]}
                       </span>
                     </div>
                   ))}
@@ -304,7 +318,7 @@ export default function Dashboard() {
             <div className="rounded-2xl bg-white p-5 shadow-[0_8px_24px_rgba(24,35,52,0.04)]">
               <div className="flex items-center justify-between">
                 <h2 className="text-lg font-bold tracking-[-0.04em] text-[#111827]">Priorités</h2>
-                <button className="flex items-center gap-1 text-xs font-semibold text-[#758196]">
+                <button type="button" onClick={() => setLocation("/reports")} className="flex items-center gap-1 text-xs font-semibold text-[#758196] hover:text-[#273142]">
                   Tout voir <ChevronRight className="size-3.5" />
                 </button>
               </div>

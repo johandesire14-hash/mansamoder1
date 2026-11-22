@@ -18,6 +18,11 @@
 - [x] Seules les données de démonstration du Dashboard sont stockées dans le `localStorage` du navigateur, sous une clé versionnée; elles sont validées à la lecture, retombent sur les exemples initiaux si elles sont absentes ou invalides, et peuvent être réinitialisées.
 - [x] L’interface indique si le stockage navigateur fonctionne ou si les données ne pourront pas persister; aucun mot de passe, identifiant ou état utilisateur n’est sauvegardé dans `localStorage`.
 
+## Interactions — première passe
+- [x] Le Dashboard met à jour ses indicateurs, la période affichée et le graphique lorsque l’administrateur choisit « Aujourd’hui », « Cette semaine » ou « Ce mois »; les sélecteurs du graphique basculent entre six et trente jours.
+- [x] Le bouton « Tout voir » de la carte Priorités ouvre la file Signalements.
+- [ ] Continuer l’audit des boutons et contrôles des autres pages : raccorder les actions utiles à un changement d’état, une navigation, un dialogue ou un retour explicite; rendre les éléments non disponibles visuellement inactifs plutôt que de laisser des contrôles muets.
+
 ## Page Signalements
 - [x] Ajouter la page `/reports` accessible uniquement à une session administrateur, l’indiquer dans `client/public/manus-routes.json` et relier le menu « Signalements » des pages d’administration à cette route.
 - [x] Reproduire l’en-tête « Signalements », la recherche « Rechercher un signalement… » et les onglets Tous (56), Nouveaux (18), En cours (24) et Résolus (14).
