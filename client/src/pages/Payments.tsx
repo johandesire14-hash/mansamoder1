@@ -68,7 +68,7 @@ const filters: Filter[] = ["Toutes", "En attente", "Payées", "Échouées"];
 
 const navigation = [
   { label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
-  { label: "Signalements", icon: Flag },
+  { label: "Signalements", icon: Flag, path: "/reports" },
   { label: "Utilisateurs", icon: Users, path: "/users" },
   { label: "Vérifications", icon: FileCheck2 },
   { label: "Paiements", icon: WalletCards, path: "/payments" },

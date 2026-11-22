@@ -39,9 +39,17 @@
 - [x] Garder les tickets, réponses et changements de statut en mémoire côté client uniquement : ne pas modifier la base, appeler un service de support externe ou utiliser `localStorage` pour ces données.
 - [x] Faire ouvrir `/support` depuis les cartes « Support client / Ouvrir la file » et le raccourci Support client présents dans l’espace administrateur.
 
+## Page Signalements
+- [x] Ajouter la page `/reports` accessible uniquement à une session administrateur, l’indiquer dans `client/public/manus-routes.json` et relier le menu « Signalements » des pages d’administration à cette route.
+- [x] Reproduire l’en-tête « Signalements », la recherche et les onglets Tous (56), Nouveaux (18), En cours (24) et Résolus (14).
+- [x] Afficher « Signalements récents » avec le tri « Plus récents » et les colonnes Utilisateur, Contenu, Motif, Date, Priorité et Statut; reprendre les dix lignes visibles de la maquette.
+- [x] Afficher le détail du signalement sélectionné avec l’utilisateur signalé, le type de contenu et son extrait, le motif et sa description, la date, le déclarant et ses signalements antérieurs.
+- [x] Permettre la recherche, le filtrage par statut, la sélection d’une ligne, le traitement (« En cours ») et la résolution d’un signalement.
+- [x] Garder les signalements et leurs changements de statut en mémoire côté client uniquement : ne pas modifier la base, appeler un service externe ou utiliser `localStorage` pour ces données.
+
 ## Site Webdev permanent, privé et persistant
 - [x] Le projet Webdev dispose d’un serveur et d’une base MySQL gérée; le dépôt importé contient la migration utilisateur et `/api/health` répond sans authentification.
-- [x] Le manifeste `client/public/manus-routes.json` déclare `/`, `/login`, `/dashboard`, `/payments`, `/users` et `/support`; le `Dockerfile` sert le client compilé et respecte le port `PORT`.
+- [x] Le manifeste `client/public/manus-routes.json` déclare `/`, `/login`, `/dashboard`, `/payments`, `/users`, `/support`, `/activity` et `/reports`; le `Dockerfile` sert le client compilé et respecte le port `PORT`.
 - [ ] Les secrets d’administration sont enregistrés de façon protégée pour le runtime publié; les migrations applicatives requises sont appliquées sans exposer de credential.
 - [ ] Une nouvelle build de publication réussit et fournit une URL stable; l’accès à ce site privé demeure réservé au propriétaire, sans basculer la visibilité en public.
 

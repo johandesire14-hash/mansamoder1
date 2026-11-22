@@ -10,6 +10,7 @@ import Payments from "./pages/Payments";
 import Users from "./pages/Users";
 import Support from "./pages/Support";
 import ActivityLog from "./pages/ActivityLog";
+import Reports from "./pages/Reports";
 
 function LoadingScreen() {
   return (
@@ -22,7 +23,7 @@ function LoadingScreen() {
   );
 }
 
-function AccessGuard({ page = "dashboard" }: { page?: "dashboard" | "payments" | "users" | "support" | "activity" }) {
+function AccessGuard({ page = "dashboard" }: { page?: "dashboard" | "payments" | "users" | "support" | "activity" | "reports" }) {
   const { user, loading } = useAuth();
 
   if (loading) return <LoadingScreen />;
@@ -44,6 +45,7 @@ function AccessGuard({ page = "dashboard" }: { page?: "dashboard" | "payments" |
   if (page === "users") return <Users />;
   if (page === "support") return <Support />;
   if (page === "activity") return <ActivityLog />;
+  if (page === "reports") return <Reports />;
   return <Dashboard />;
 }
 
@@ -71,6 +73,9 @@ function Router() {
       </Route>
       <Route path="/activity">
         <AccessGuard page="activity" />
+      </Route>
+      <Route path="/reports">
+        <AccessGuard page="reports" />
       </Route>
       <Route path="/" component={HomeRedirect} />
       <Route path="/404">

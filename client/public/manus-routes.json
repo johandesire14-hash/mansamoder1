@@ -27,6 +27,10 @@
     {
       "path": "/activity",
       "title": "Journal d’activité — Mansa Hub"
+    },
+    {
+      "path": "/reports",
+      "title": "Signalements — Mansa Hub"
     }
   ]
 }
