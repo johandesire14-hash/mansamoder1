@@ -27,12 +27,12 @@
 - [x] Garder les signalements et changements de statut en mémoire côté client uniquement : ne pas modifier la base, appeler un service externe ou utiliser `localStorage` pour ces données.
 
 ## Page Entreprises
-- [ ] Ajouter la page `/businesses` accessible uniquement à une session administrateur, l’indiquer dans `client/public/manus-routes.json` et relier les menus « Entreprises » des pages d’administration à cette route.
-- [ ] Reproduire le titre « Entreprises », le sous-titre « Surveillez les entreprises, leurs performances et les risques associés », la recherche « Rechercher une entreprise ou un propriétaire… », le sélecteur FCFA et le filtre « Tous les statuts ».
-- [ ] Afficher les dix entreprises de la maquette avec leur propriétaire et e-mail, statut KYC, statut de l’entreprise, nombre de produits, membres, volume brut (GMV), taux de remboursement et action de ligne.
-- [ ] Ouvrir le panneau de Kora Academy par défaut avec son propriétaire, son e-mail, son statut « Active » et les onglets « Résumé & Métriques », « Produits » et « Dashboard Financier ».
-- [ ] Afficher les quatre métriques visibles, les intégrations YouTube et Stripe indiquées comme connectées, la rétention de 72 h, le seuil minimum de 5 000 FCFA et les moyens de versement Orange Money, MTN Money, Wave et virement bancaire.
-- [ ] Permettre la recherche, le filtrage, la sélection d’entreprise et les changements d’état uniquement en mémoire côté client; ne pas appeler YouTube, Stripe ou un service financier, modifier la base ou utiliser `localStorage` pour ces données.
+- [x] Ajouter la page `/businesses` accessible uniquement à une session administrateur, l’indiquer dans `client/public/manus-routes.json` et relier les menus « Entreprises » des pages d’administration à cette route.
+- [x] Reproduire le titre « Entreprises », le sous-titre « Surveillez les entreprises, leurs performances et les risques associés », la recherche « Rechercher une entreprise ou un propriétaire… », le sélecteur FCFA et le filtre « Tous les statuts ».
+- [x] Afficher les dix entreprises de la maquette avec leur propriétaire et e-mail, statut KYC, statut de l’entreprise, nombre de produits, membres, volume brut (GMV), taux de remboursement et action de ligne.
+- [x] Ouvrir le panneau de Kora Academy par défaut avec son propriétaire, son e-mail, son statut « Active » et les onglets « Résumé & Métriques », « Produits » et « Dashboard Financier ».
+- [x] Afficher les quatre métriques visibles, les intégrations YouTube et Stripe indiquées comme connectées, la rétention de 72 h, le seuil minimum de 5 000 FCFA et les moyens de versement Orange Money, MTN Money, Wave et virement bancaire.
+- [x] Permettre la recherche, le filtrage, la sélection d’entreprise et les changements d’état uniquement en mémoire côté client; ne pas appeler YouTube, Stripe ou un service financier, modifier la base ou utiliser `localStorage` pour ces données.
 
 ## Page Paiements
 - [x] Ajouter la page `/payments` accessible uniquement à une session administrateur et l’indiquer comme route dans `client/public/manus-routes.json`.
