@@ -19,6 +19,7 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showRecoveryInfo, setShowRecoveryInfo] = useState(false);
 
   useEffect(() => {
     if (loginMutation.error) loginMutation.reset();
@@ -90,7 +91,8 @@ export default function Login() {
                     <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-[#94a3b8] hover:bg-[#eef2f4] hover:text-[#334155]" onClick={() => setShowPassword((current) => !current)} aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}>{showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}</button>
                   </span>
                 </label>
-                <div className="flex justify-end"><button type="button" className="text-xs font-semibold text-[#28784b] hover:underline">Mot de passe oublié ?</button></div>
+                <div className="flex justify-end"><button type="button" onClick={() => setShowRecoveryInfo((open) => !open)} aria-expanded={showRecoveryInfo} className="text-xs font-semibold text-[#28784b] hover:underline">Mot de passe oublié ?</button></div>
+                {showRecoveryInfo && <p role="status" className="rounded-xl border border-[#dfe4e9] bg-[#f8fafb] px-4 py-3 text-sm leading-5 text-[#526076]">La réinitialisation automatique n’est pas disponible pour ce compte administrateur. Contactez le propriétaire du projet pour mettre à jour les identifiants de manière sécurisée.</p>}
                 {loginMutation.error && <div className="rounded-xl border border-[#fecaca] bg-[#fff5f5] px-4 py-3 text-sm text-[#b42318]">Adresse e-mail ou mot de passe incorrect.</div>}
                 <Button className="h-12 w-full rounded-xl bg-[#1f2326] text-sm font-bold text-white shadow-[0_8px_20px_rgba(31,35,38,0.16)] hover:bg-[#30363a]" type="submit" disabled={loginMutation.isPending}>{loginMutation.isPending ? "Connexion en cours…" : <><span>Se connecter</span><ArrowRight className="size-4" /></>}</Button>
               </form>

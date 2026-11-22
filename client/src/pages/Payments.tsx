@@ -186,7 +186,7 @@ export default function Payments() {
                   <Icon className="size-[18px]" />{label}
                 </button>
               ) : (
-                <button key={label} type="button" className={className}>
+                <button key={label} type="button" disabled className={`${className} cursor-not-allowed opacity-45`} aria-disabled="true" title="Cette section n’est pas disponible">
                   <Icon className="size-[18px]" />{label}
                 </button>
               );
@@ -213,7 +213,7 @@ export default function Payments() {
               <label className="flex h-12 min-w-0 flex-1 items-center gap-3 rounded-full bg-white px-4 text-[#152033] shadow-sm sm:w-[280px] sm:flex-none lg:w-[330px]">
                 <Search className="size-5 shrink-0" />
                 <span className="sr-only">Rechercher</span>
-                <input className="min-w-0 flex-1 border-0 bg-transparent text-sm outline-none placeholder:text-[#9aa3b1]" placeholder="Rechercher..." />
+                <input value={query} onChange={(event) => setQuery(event.target.value)} className="min-w-0 flex-1 border-0 bg-transparent text-sm outline-none placeholder:text-[#9aa3b1]" placeholder="Rechercher..." />
               </label>
               <button type="button" className="relative flex size-12 shrink-0 items-center justify-center rounded-full bg-white text-[#152033] shadow-sm" aria-label="Notifications"><Bell className="size-5" /><span className="absolute right-[13px] top-[11px] size-2 rounded-full bg-[#df302f]" /></button>
               <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#72543f] text-xs font-bold text-white" aria-label="Compte administrateur">{adminInitials}</div>
@@ -232,7 +232,7 @@ export default function Payments() {
               <div className="p-5 pb-4 sm:p-6 sm:pb-4">
                 <div className="flex items-center justify-between gap-3">
                   <h2 className="text-xl font-bold tracking-[-0.04em] text-[#111827]">Transactions récentes</h2>
-                  <button type="button" className="flex shrink-0 items-center gap-2 text-sm text-[#909aaa] hover:text-[#1f2937]">Tout voir <ArrowRight className="size-4" /></button>
+                  <button type="button" onClick={() => { setFilter("Toutes"); setQuery(""); }} className="flex shrink-0 items-center gap-2 text-sm text-[#909aaa] hover:text-[#1f2937]">Tout voir <ArrowRight className="size-4" /></button>
                 </div>
                 <label className="mt-4 flex h-12 items-center gap-3 rounded-xl border border-[#e6e9ed] px-4 text-[#152033]">
                   <Search className="size-5 shrink-0" />
@@ -306,8 +306,8 @@ export default function Payments() {
               </dl>
 
               <Button type="button" className="mt-5 h-12 w-full rounded-xl bg-[#252728] text-sm font-semibold text-white hover:bg-[#333637]" onClick={() => copyValue(selectedTransaction.reference)}>
-                {copied === selectedTransaction.reference ? <Check className="size-4" /> : <ExternalLink className="size-4" />}
-                {copied === selectedTransaction.reference ? "Référence copiée" : "Voir la transaction"}
+                {copied === selectedTransaction.reference ? <Check className="size-4" /> : <Clipboard className="size-4" />}
+                {copied === selectedTransaction.reference ? "Référence copiée" : "Copier la référence"}
               </Button>
             </aside>
           </div>
