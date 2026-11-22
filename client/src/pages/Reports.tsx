@@ -61,7 +61,7 @@ const navigation: { label: string; icon: LucideIcon; path?: string }[] = [
   { label: "Utilisateurs", icon: Users, path: "/users" },
   { label: "Vérifications", icon: FileCheck2 },
   { label: "Paiements", icon: WalletCards, path: "/payments" },
-  { label: "Entreprises", icon: Building2 },
+  { label: "Entreprises", icon: Building2, path: "/businesses" },
   { label: "Abonnements", icon: CreditCard },
   { label: "Statistiques", icon: Activity },
   { label: "Journal d’activité", icon: Clock3, path: "/activity" },

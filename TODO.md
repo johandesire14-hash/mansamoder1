@@ -18,6 +18,22 @@
 - [x] Seules les données de démonstration du Dashboard sont stockées dans le `localStorage` du navigateur, sous une clé versionnée; elles sont validées à la lecture, retombent sur les exemples initiaux si elles sont absentes ou invalides, et peuvent être réinitialisées.
 - [x] L’interface indique si le stockage navigateur fonctionne ou si les données ne pourront pas persister; aucun mot de passe, identifiant ou état utilisateur n’est sauvegardé dans `localStorage`.
 
+## Page Signalements
+- [x] Ajouter la page `/reports` accessible uniquement à une session administrateur, l’indiquer dans `client/public/manus-routes.json` et relier le menu « Signalements » des pages d’administration à cette route.
+- [x] Reproduire l’en-tête « Signalements », la recherche « Rechercher un signalement… » et les onglets Tous (56), Nouveaux (18), En cours (24) et Résolus (14).
+- [x] Afficher « Signalements récents » avec le tri « Plus récents » et les colonnes Utilisateur, Contenu, Motif, Date, Priorité et Statut; reprendre les dix lignes visibles de la maquette avec leurs noms, contenus, motifs, dates, priorités et statuts.
+- [x] Afficher le détail du signalement sélectionné avec l’utilisateur signalé, son type de contenu et extrait, le motif et sa description, la date du signalement, le déclarant et le nombre de signalements antérieurs.
+- [x] Permettre de filtrer par statut, rechercher parmi les signalements, sélectionner une ligne, traiter un signalement (« En cours ») et le marquer comme résolu.
+- [x] Garder les signalements et changements de statut en mémoire côté client uniquement : ne pas modifier la base, appeler un service externe ou utiliser `localStorage` pour ces données.
+
+## Page Entreprises
+- [ ] Ajouter la page `/businesses` accessible uniquement à une session administrateur, l’indiquer dans `client/public/manus-routes.json` et relier les menus « Entreprises » des pages d’administration à cette route.
+- [ ] Reproduire le titre « Entreprises », le sous-titre « Surveillez les entreprises, leurs performances et les risques associés », la recherche « Rechercher une entreprise ou un propriétaire… », le sélecteur FCFA et le filtre « Tous les statuts ».
+- [ ] Afficher les dix entreprises de la maquette avec leur propriétaire et e-mail, statut KYC, statut de l’entreprise, nombre de produits, membres, volume brut (GMV), taux de remboursement et action de ligne.
+- [ ] Ouvrir le panneau de Kora Academy par défaut avec son propriétaire, son e-mail, son statut « Active » et les onglets « Résumé & Métriques », « Produits » et « Dashboard Financier ».
+- [ ] Afficher les quatre métriques visibles, les intégrations YouTube et Stripe indiquées comme connectées, la rétention de 72 h, le seuil minimum de 5 000 FCFA et les moyens de versement Orange Money, MTN Money, Wave et virement bancaire.
+- [ ] Permettre la recherche, le filtrage, la sélection d’entreprise et les changements d’état uniquement en mémoire côté client; ne pas appeler YouTube, Stripe ou un service financier, modifier la base ou utiliser `localStorage` pour ces données.
+
 ## Page Paiements
 - [x] Ajouter la page `/payments` accessible uniquement à une session administrateur et l’indiquer comme route dans `client/public/manus-routes.json`.
 - [x] Reproduire la maquette fournie avec les indicateurs « Revenus de la plateforme », « Revenus des créateurs » et « Paiements en attente », la recherche, les filtres Toutes/En attente/Payées/Échouées, le tableau des transactions et le panneau de détails sélectionné.
@@ -39,13 +55,15 @@
 - [x] Garder les tickets, réponses et changements de statut en mémoire côté client uniquement : ne pas modifier la base, appeler un service de support externe ou utiliser `localStorage` pour ces données.
 - [x] Faire ouvrir `/support` depuis les cartes « Support client / Ouvrir la file » et le raccourci Support client présents dans l’espace administrateur.
 
-## Page Signalements
-- [x] Ajouter la page `/reports` accessible uniquement à une session administrateur, l’indiquer dans `client/public/manus-routes.json` et relier le menu « Signalements » des pages d’administration à cette route.
-- [x] Reproduire l’en-tête « Signalements », la recherche et les onglets Tous (56), Nouveaux (18), En cours (24) et Résolus (14).
-- [x] Afficher « Signalements récents » avec le tri « Plus récents » et les colonnes Utilisateur, Contenu, Motif, Date, Priorité et Statut; reprendre les dix lignes visibles de la maquette.
-- [x] Afficher le détail du signalement sélectionné avec l’utilisateur signalé, le type de contenu et son extrait, le motif et sa description, la date, le déclarant et ses signalements antérieurs.
-- [x] Permettre la recherche, le filtrage par statut, la sélection d’une ligne, le traitement (« En cours ») et la résolution d’un signalement.
-- [x] Garder les signalements et leurs changements de statut en mémoire côté client uniquement : ne pas modifier la base, appeler un service externe ou utiliser `localStorage` pour ces données.
+## Page Journal d’activité
+- [x] Ajouter la page `/activity` accessible uniquement à une session administrateur et l’indiquer dans `client/public/manus-routes.json`.
+- [x] Reproduire l’en-tête « Journal d’activité », le sous-titre, l’indicateur « Registre sécurisé » et l’action « Déconnecter les autres sessions ».
+- [x] Afficher les trois sessions visibles (MacBook Pro, iPhone 15, Windows PC), avec navigateur/système, adresse IP, localisation, dernière activité, statut « Session actuelle » et action « Révoquer » pour les autres.
+- [x] Reproduire le « Journal d’audit immuable » avec la bannière de lecture seule, la recherche, le filtre d’actions, les colonnes Horodatage, Administrateur, Type d’action, Cible & ID, Motif réglementaire, Adresse IP et Détails, ainsi que les cinq événements visibles.
+- [x] Faire ouvrir le détail d’un événement depuis l’icône œil et proposer les exports « Export CSV LCB-FT » et « Export JSON Brut »; la fenêtre se ferme avec Échap, reçoit le focus à l’ouverture et le restitue à la fermeture.
+- [x] Garder sessions et événements de présentation en mémoire côté client uniquement, sans `localStorage`, base de données ni service externe; les actions locales de révocation n’invalident pas les sessions d’authentification réelles et aucun registre persistant immuable n’est créé.
+- [x] Afficher clairement dans l’interface que les sessions et événements sont locaux, que la révocation ne déconnecte pas réellement d’appareils et que le journal n’est pas un registre serveur immuable.
+- [x] Relier « Journal d’activité » à `/activity` dans les navigations des pages administrateur.
 
 ## Site Webdev permanent, privé et persistant
 - [x] Le projet Webdev dispose d’un serveur et d’une base MySQL gérée; le dépôt importé contient la migration utilisateur et `/api/health` répond sans authentification.

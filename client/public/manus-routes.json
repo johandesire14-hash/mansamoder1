@@ -31,6 +31,10 @@
     {
       "path": "/reports",
       "title": "Signalements — Mansa Hub"
+    },
+    {
+      "path": "/businesses",
+      "title": "Entreprises — Mansa Hub"
     }
   ]
 }
