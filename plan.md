@@ -74,6 +74,9 @@ La page Paramètres garde ses valeurs, brouillons et journal local en mémoire u
 
 ## Sécurité
 
+- Audit transversal des contrôles : ne relier que les interactions à des routes et données présentes; contrôler les filtres, recherches, compteurs, sélections, pagination, dialogues et exports. Si la source serveur ou la destination manque, désactiver ou retirer le contrôle ou l’identifier comme aperçu local; ne pas simuler une réussite serveur.
+- Pour les pages utilisant des données codées en dur, les messages d’action et les métriques doivent rester explicitement locaux, et les libellés ne doivent pas suggérer une portée de production ou une intégrité/persistance qui n’existe pas.
+- Ne pas ajouter d’API métier, de pages ou de données absentes dans cette passe; routes Abonnements, Statistiques et Sécurité & audit ainsi que notifications demeurent indisponibles tant que leurs fonctions ne sont pas construites.
 - la procédure de connexion compare les valeurs côté serveur ;
 - le cookie de session reste `SameSite=None; Secure` pour le Preview HTTPS embarqué ;
 - le Dashboard, Paiements, Utilisateurs, Support client, Journal d’activité, Signalements, Entreprises et Vérifications vérifient l’utilisateur et le rôle `admin` via le garde d’accès existant ;

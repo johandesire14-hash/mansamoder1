@@ -171,7 +171,7 @@ export default function Users() {
             {navigation.map(({ label, icon: Icon, path }) => {
               const active = label === "Utilisateurs";
               const className = `flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium transition ${active ? "bg-[#eef0f2] font-bold text-[#111827]" : "text-[#657184] hover:bg-[#f7f8f9] hover:text-[#273142]"}`;
-              return <button key={label} type="button" className={className} onClick={() => { setMobileNav(false); if (path) setLocation(path); }} aria-current={active ? "page" : undefined}><Icon className="size-[18px]" />{label}</button>;
+              return <button key={label} type="button" className={className} disabled={!path} aria-disabled={!path} title={!path ? "Aucune route n’est disponible pour cette section" : undefined} onClick={() => { setMobileNav(false); if (path) setLocation(path); }} aria-current={active ? "page" : undefined}><Icon className="size-[18px]" />{label}</button>;
             })}
           </nav>
           <div className="mt-auto rounded-2xl bg-[#242729] p-5 text-white">
@@ -191,7 +191,7 @@ export default function Users() {
               <div><h1 className="text-[28px] font-bold tracking-[-0.06em] text-[#111827] sm:text-[34px]">Utilisateurs</h1><p className="mt-1 text-sm text-[#8791a0]">Gérez les comptes et suivez leur activité.</p></div>
             </div>
             <div className="flex items-center gap-3">
-              <button type="button" className="relative flex size-11 items-center justify-center rounded-full bg-white text-[#152033] shadow-sm" aria-label="Notifications"><Bell className="size-5" /><span className="absolute right-3 top-2.5 size-2 rounded-full bg-[#df302f]" /></button>
+              <button type="button" className="relative flex size-11 items-center justify-center rounded-full bg-white text-[#152033] shadow-sm" aria-label="Notifications indisponibles" disabled title="Aucune source de notifications n’est configurée"><Bell className="size-5" /></button>
               <div className="flex size-11 items-center justify-center rounded-full bg-[#72543f] text-xs font-bold text-white" aria-label="Compte administrateur">{adminInitials}</div>
               <Button variant="ghost" size="icon" className="rounded-full text-[#64748b]" onClick={() => logoutMutation.mutate()} aria-label="Se déconnecter" disabled={logoutMutation.isPending}><LogOut className="size-4" /></Button>
             </div>

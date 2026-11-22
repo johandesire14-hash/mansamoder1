@@ -403,7 +403,7 @@ export default function ActivityLog() {
             {navigation.map(({ label, icon: Icon, path }) => {
               const active = path === "/activity" && location === "/activity";
               const className = `flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium transition ${active ? "bg-[#eef0f2] font-bold text-[#111827]" : "text-[#657184] hover:bg-[#f7f8f9] hover:text-[#273142]"}`;
-              return <button key={label} type="button" className={className} onClick={() => { setMobileNav(false); if (path) setLocation(path); }} aria-current={active ? "page" : undefined}><Icon className="size-[18px]" />{label}</button>;
+              return <button key={label} type="button" className={className} disabled={!path} aria-disabled={!path} title={!path ? "Aucune route n’est disponible pour cette section" : undefined} onClick={() => { setMobileNav(false); if (path) setLocation(path); }} aria-current={active ? "page" : undefined}><Icon className="size-[18px]" />{label}</button>;
             })}
           </nav>
 
@@ -432,7 +432,7 @@ export default function ActivityLog() {
                 <label className="sr-only" htmlFor="global-audit-search">Rechercher dans le journal</label>
                 <input id="global-audit-search" value={query} onChange={(event) => setQuery(event.target.value)} className="min-w-0 flex-1 border-0 bg-transparent text-sm outline-none placeholder:text-[#9aa3b1]" placeholder="Rechercher..." />
               </form>
-              <button type="button" className="relative flex size-12 shrink-0 items-center justify-center rounded-full bg-white text-[#152033] shadow-sm" aria-label="Notifications"><Bell className="size-5" /><span className="absolute right-[13px] top-[11px] size-2 rounded-full bg-[#df302f]" /></button>
+              <button type="button" className="relative flex size-12 shrink-0 items-center justify-center rounded-full bg-white text-[#152033] shadow-sm" aria-label="Notifications indisponibles" disabled title="Aucune source de notifications n’est configurée"><Bell className="size-5" /></button>
               <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#76513c] text-xs font-bold text-white" aria-label={`Compte administrateur ${adminName}`}>{adminInitials}</div>
               <Button variant="ghost" size="icon" className="shrink-0 rounded-full text-[#64748b]" onClick={() => logoutMutation.mutate()} aria-label="Se déconnecter" disabled={logoutMutation.isPending}><LogOut className="size-4" /></Button>
             </div>
@@ -452,7 +452,7 @@ export default function ActivityLog() {
                 <p className="mt-1 text-sm text-[#8791a0]">Appareils connectés et activité récente</p>
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center gap-2 rounded-full bg-[#e8f7ef] px-3 py-2 text-xs font-semibold text-[#21814d]"><ShieldCheck className="size-4" />Registre sécurisé</span>
+                <span className="inline-flex items-center gap-2 rounded-full bg-[#e8f7ef] px-3 py-2 text-xs font-semibold text-[#21814d]"><ShieldCheck className="size-4" />Aperçu local</span>
                 <button type="button" onClick={revokeOtherSessions} className="inline-flex items-center gap-2 rounded-xl border border-[#f2d3d1] bg-white px-3.5 py-2.5 text-xs font-semibold text-[#cf473b] transition hover:bg-[#fff6f5] sm:text-sm"><LogOut className="size-4" />Déconnecter les autres sessions</button>
               </div>
             </div>
@@ -483,11 +483,11 @@ export default function ActivityLog() {
           <section className="overflow-hidden rounded-2xl bg-white shadow-[0_8px_24px_rgba(24,35,52,0.035)]">
             <div className="flex flex-wrap items-start justify-between gap-4 border-b border-[#edf0f2] px-5 py-5 sm:px-6">
               <div>
-                <h2 className="flex items-center gap-2 text-lg font-bold tracking-[-0.04em] text-[#111827]"><ShieldCheck className="size-5 text-[#21814d]" />Journal d’audit immuable</h2>
+                <h2 className="flex items-center gap-2 text-lg font-bold tracking-[-0.04em] text-[#111827]"><ShieldCheck className="size-5 text-[#21814d]" />Événements de démonstration</h2>
                 <p className="mt-1 text-sm text-[#8791a0]">Registre des actions sensibles et réglementaires</p>
               </div>
               <div className="flex flex-wrap gap-2">
-                <button type="button" onClick={() => exportEvents("csv")} className="inline-flex items-center gap-2 rounded-xl bg-[#1f2326] px-3.5 py-2.5 text-xs font-semibold text-white transition hover:bg-[#34393c] sm:text-sm"><Download className="size-4" />Export CSV LCB-FT</button>
+                <button type="button" onClick={() => exportEvents("csv")} className="inline-flex items-center gap-2 rounded-xl bg-[#1f2326] px-3.5 py-2.5 text-xs font-semibold text-white transition hover:bg-[#34393c] sm:text-sm"><Download className="size-4" />Export CSV local</button>
                 <button type="button" onClick={() => exportEvents("json")} className="inline-flex items-center gap-2 rounded-xl border border-[#dce1e6] bg-white px-3.5 py-2.5 text-xs font-semibold text-[#354154] transition hover:bg-[#f7f8f9] sm:text-sm"><Download className="size-4" />Export JSON brut</button>
               </div>
             </div>

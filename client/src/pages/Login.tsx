@@ -20,6 +20,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showRecoveryInfo, setShowRecoveryInfo] = useState(false);
+  const [oauthError, setOauthError] = useState("");
 
   useEffect(() => {
     if (loginMutation.error) loginMutation.reset();
@@ -32,11 +33,12 @@ export default function Login() {
     loginMutation.mutate({ email, password });
   };
 
-  const handleGoogleLogin = () => {
+  const handleOAuthLogin = () => {
+    setOauthError("");
     try {
       startLogin();
     } catch {
-      loginMutation.reset();
+      setOauthError("Impossible de démarrer la connexion OAuth Manus. Réessayez ou utilisez votre adresse e-mail.");
     }
   };
 
@@ -98,7 +100,8 @@ export default function Login() {
               </form>
 
               <div className="my-7 flex items-center gap-4 text-[11px] font-medium text-[#94a3b8]"><span className="h-px flex-1 bg-[#e8ebee]" />ou<span className="h-px flex-1 bg-[#e8ebee]" /></div>
-              <Button type="button" variant="outline" className="h-12 w-full rounded-xl border-[#dfe4e9] bg-white text-sm font-semibold text-[#253044] hover:bg-[#f8fafb]" onClick={handleGoogleLogin}><img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="" className="size-5" />Continuer avec Google</Button>
+              <Button type="button" variant="outline" className="h-12 w-full rounded-xl border-[#dfe4e9] bg-white text-sm font-semibold text-[#253044] hover:bg-[#f8fafb]" onClick={handleOAuthLogin}>Continuer avec Manus OAuth</Button>
+              {oauthError && <p role="alert" className="mt-3 rounded-xl border border-[#fecaca] bg-[#fff5f5] px-4 py-3 text-sm text-[#b42318]">{oauthError}</p>}
               <p className="mt-8 flex items-start gap-2 text-center text-[11px] leading-5 text-[#94a3b8]"><Check className="mt-0.5 size-3.5 shrink-0 text-[#36a867]" />Accès réservé aux membres autorisés de l’équipe Mansa.</p>
             </div>
           </div>

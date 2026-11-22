@@ -15,7 +15,6 @@ import {
   LayoutDashboard,
   LogOut,
   Menu,
-  Search,
   Settings,
   Shield,
   TrendingUp,
@@ -90,7 +89,6 @@ function MetricCard({
 
 type DashboardPeriod = "Aujourd’hui" | "Cette semaine" | "Ce mois";
 
-const periodFactors: Record<DashboardPeriod, number> = { "Aujourd’hui": 0.04, "Cette semaine": 0.24, "Ce mois": 1 };
 function formatPeriodDate(date: Date) {
   return new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short", year: "numeric" }).format(date);
 }
@@ -122,7 +120,7 @@ export default function Dashboard() {
   const [periodMenuOpen, setPeriodMenuOpen] = useState(false);
   const [chartMenuOpen, setChartMenuOpen] = useState(false);
   const [chartRange, setChartRange] = useState<"6 derniers jours" | "30 derniers jours">("6 derniers jours");
-  const factor = periodFactors[period];
+  const factor = 1;
   const chartValues = chartRange === "30 derniers jours" ? demoData.chartBars.map((value) => Math.min(100, Math.round(value * 1.08))) : period === "Aujourd’hui" ? [20, 34, 27, 58, 46, 86] : period === "Cette semaine" ? demoData.chartBars.map((value) => Math.min(100, Math.round(value * 1.15))) : demoData.chartBars;
   const chartLabels = period === "Aujourd’hui" ? ["08h", "10h", "12h", "14h", "16h", "18h"] : period === "Cette semaine" ? ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"] : ["S1", "S2", "S3", "S4", "S5", "S6"];
 
@@ -162,6 +160,8 @@ export default function Dashboard() {
               <button
                 key={label}
                 type="button"
+                disabled={label === "Abonnements" || label === "Statistiques" || label === "Sécurité & audit"}
+                title={label === "Abonnements" || label === "Statistiques" || label === "Sécurité & audit" ? "Aucune route n’est disponible pour cette section" : undefined}
                 onClick={() => { setMobileNav(false); if (label === "Signalements") setLocation("/reports"); if (label === "Paiements") setLocation("/payments"); if (label === "Utilisateurs") setLocation("/users"); if (label === "Journal d’activité") setLocation("/activity"); if (label === "Entreprises") setLocation("/businesses"); if (label === "Vérifications") setLocation("/verifications"); if (label === "Paramètres") setLocation("/settings"); }}
                 className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium transition ${active ? "bg-[#eef0f2] font-bold text-[#111827]" : "text-[#657184] hover:bg-[#f7f8f9] hover:text-[#273142]"}`}
               >
@@ -212,15 +212,13 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <div className="hidden items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm text-[#8993a2] shadow-sm sm:flex">
-                <Search className="size-4" />Rechercher...
-              </div>
               <button
                 className="relative rounded-full bg-white p-3 text-[#273142] shadow-sm"
-                aria-label="Notifications"
+                aria-label="Notifications indisponibles"
+                disabled
+                title="Aucune source de notifications n’est configurée"
               >
                 <Bell className="size-4" />
-                <span className="absolute right-2 top-2 size-1.5 rounded-full bg-[#e25555]" />
               </button>
               <div className="flex size-10 items-center justify-center rounded-full bg-[#27353d] text-sm font-bold text-white">
                 JD
@@ -359,16 +357,17 @@ export default function Dashboard() {
                   label="Vérifications"
                   count={demoData.pendingVerifications}
                   tone="amber"
+                  onClick={() => setLocation("/verifications")}
                 />
-                <QuickAction icon={BarChart3} label="Statistiques" count="Voir" tone="green" />
-                <QuickAction icon={Shield} label="Sécurité & audit" count="" tone="gray" />
+                <QuickAction icon={BarChart3} label="Statistiques" count="Indisponible" tone="green" />
+                <QuickAction icon={Shield} label="Sécurité & audit" count="Indisponible" tone="gray" />
                 <QuickAction icon={Headphones} label="Support client" count="12" tone="dark" onClick={() => setLocation("/support")} />
               </div>
             </div>
           </section>
 
           <footer className="mt-7 flex flex-wrap items-center justify-between gap-3 border-t border-[#dfe4e8] pt-5 text-xs text-[#8b95a4]">
-            <span>Dernière synchronisation : aujourd’hui à 11:03</span>
+            <span>Données locales de démonstration — aucune synchronisation serveur</span>
             <Button
               variant="ghost"
               size="sm"
@@ -432,7 +431,7 @@ function QuickAction({
   };
 
   return (
-    <button type="button" onClick={onClick} className={`flex items-center gap-2 rounded-xl px-3.5 py-2.5 text-xs font-semibold ${styles[tone]}`}>
+    <button type="button" onClick={onClick} disabled={!onClick} title={!onClick ? "Aucune route n’est disponible pour cette section" : undefined} className={`flex items-center gap-2 rounded-xl px-3.5 py-2.5 text-xs font-semibold disabled:cursor-not-allowed disabled:opacity-55 ${styles[tone]}`}>
       <Icon className="size-4" />
       {label}
       {count && <span className="rounded-full bg-white/70 px-1.5 py-0.5 text-[10px]">{count}</span>}

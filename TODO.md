@@ -24,7 +24,8 @@
 - [x] Sur Paiements, la recherche de l’en-tête filtre les transactions, « Tout voir » efface la recherche et réinitialise le filtre, et le bouton d’action copie explicitement la référence au lieu de promettre une navigation inexistante.
 - [x] Sur Utilisateurs, la pagination n’affiche plus de pages fictives; les flèches sont désactivées car aucune source ne fournit les pages suivantes au-delà des profils affichés.
 - [x] Sur Connexion, « Mot de passe oublié ? » affiche une aide transparente et n’annonce pas l’envoi d’un lien tant qu’aucune procédure de réinitialisation n’existe.
-- [ ] Continuer l’audit des boutons et contrôles restants : raccorder les actions utiles à un changement d’état, une navigation, un dialogue ou un retour explicite; rendre les éléments non disponibles visuellement inactifs plutôt que de laisser des contrôles muets.
+- [ ] Audit multi-pages (Dashboard, Signalements, Utilisateurs, Vérifications, Paiements, Entreprises, Paramètres, Support, Journal d’activité et Connexion) : relier les commandes aux routes/données existantes; rendre les recherches, filtres, compteurs, sélections et paginations cohérents avec les résultats visibles; enlever ou désactiver les éléments sans action/destination; afficher clairement les changements locaux, erreurs de navigateur et limites d’absence d’API; ne pas inventer routes, données ou mutations serveur.
+- [ ] Validation finale de l’audit : `pnpm check`, `pnpm test` et `pnpm build`, puis synchronisation sans force-push des dépôts autorisés.
 
 ## Page Signalements
 - [x] Ajouter la page `/reports` accessible uniquement à une session administrateur, l’indiquer dans `client/public/manus-routes.json` et relier le menu « Signalements » des pages d’administration à cette route.

@@ -215,7 +215,7 @@ export default function Payments() {
                 <span className="sr-only">Rechercher</span>
                 <input value={query} onChange={(event) => setQuery(event.target.value)} className="min-w-0 flex-1 border-0 bg-transparent text-sm outline-none placeholder:text-[#9aa3b1]" placeholder="Rechercher..." />
               </label>
-              <button type="button" className="relative flex size-12 shrink-0 items-center justify-center rounded-full bg-white text-[#152033] shadow-sm" aria-label="Notifications"><Bell className="size-5" /><span className="absolute right-[13px] top-[11px] size-2 rounded-full bg-[#df302f]" /></button>
+              <button type="button" className="relative flex size-12 shrink-0 items-center justify-center rounded-full bg-white text-[#152033] shadow-sm" aria-label="Notifications indisponibles" disabled title="Aucune source de notifications n’est configurée"><Bell className="size-5" /></button>
               <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#72543f] text-xs font-bold text-white" aria-label="Compte administrateur">{adminInitials}</div>
               <Button variant="ghost" size="icon" className="shrink-0 rounded-full text-[#64748b]" onClick={() => logoutMutation.mutate()} aria-label="Se déconnecter" disabled={logoutMutation.isPending}><LogOut className="size-4" /></Button>
             </div>
@@ -290,7 +290,7 @@ export default function Payments() {
               </div>
               <p className="mt-3 text-[34px] font-bold tracking-[-0.06em] text-[#111827]">{selectedTransaction.amount.replace(/^\+\s*/, "")}</p>
               <p className="text-sm font-medium text-[#263346]">{selectedTransaction.type}</p>
-              <p className="mt-1 text-sm text-[#929aaa]">Paiement envoyé à {selectedTransaction.user.split(" ")[0]}</p>
+              <p className="mt-1 text-sm text-[#929aaa]">{selectedTransaction.status === "Payé" ? "Paiement effectué pour" : selectedTransaction.status === "Échoué" ? "Paiement échoué pour" : "Paiement en attente pour"} {selectedTransaction.user.split(" ")[0]}</p>
 
               <div className="my-5 h-px bg-[#eaedf0]" />
               <dl className="space-y-4 text-sm">

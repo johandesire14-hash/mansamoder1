@@ -282,12 +282,7 @@ const initialReports: Report[] = [
   },
 ];
 
-const tabs: { label: ReportTab; count: string }[] = [
-  { label: "Tous", count: "56" },
-  { label: "Nouveaux", count: "18" },
-  { label: "En cours", count: "24" },
-  { label: "Résolus", count: "14" },
-];
+const tabs: ReportTab[] = ["Tous", "Nouveaux", "En cours", "Résolus"];
 
 const priorityStyles: Record<ReportPriority, string> = {
   Haute: "bg-[#ffeded] text-[#dc4242]",
@@ -340,7 +335,6 @@ export default function Reports() {
   const [sortNewestFirst, setSortNewestFirst] = useState(true);
   const [moreOpen, setMoreOpen] = useState(false);
 
-  const selectedReport = reports.find((report) => report.id === selectedId) ?? reports[0];
   const filteredReports = useMemo(() => {
     const normalizedQuery = query.trim().toLocaleLowerCase("fr");
     return reports
@@ -351,6 +345,7 @@ export default function Reports() {
           (activeTab === "En cours" && report.status === "En cours") ||
           (activeTab === "Résolus" && report.status === "Résolu");
         const searchText = [
+          report.id,
           report.user,
           report.handle,
           report.contentType,
@@ -358,15 +353,17 @@ export default function Reports() {
           report.reason,
           report.status,
           report.reporter,
+          report.reporterHandle,
         ].join(" ").toLocaleLowerCase("fr");
         return matchesTab && (!normalizedQuery || searchText.includes(normalizedQuery));
       })
       .sort((left, right) => sortNewestFirst ? right.order - left.order : left.order - right.order);
   }, [activeTab, query, reports, sortNewestFirst]);
+  const selectedReport = filteredReports.find((report) => report.id === selectedId) ?? filteredReports[0] ?? reports[0];
 
   function updateSelectedStatus(status: ReportStatus) {
     setReports((current) => current.map((report) => report.id === selectedReport.id ? { ...report, status } : report));
-    toast.success(status === "Résolu" ? "Signalement marqué comme résolu" : "Signalement pris en charge");
+    toast.info(status === "Résolu" ? "Statut modifié dans cet aperçu local uniquement." : "Statut modifié dans cet aperçu local uniquement.");
   }
 
   async function copyReference() {
@@ -400,7 +397,7 @@ export default function Reports() {
                 <button
                   key={label}
                   type="button"
-                  onClick={() => { setMobileNav(false); if (path) setLocation(path); }}
+                  disabled={!path} aria-disabled={!path} title={!path ? "Aucune route n’est disponible pour cette section" : undefined} onClick={() => { setMobileNav(false); if (path) setLocation(path); }}
                   className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium transition ${active ? "bg-[#eef0f2] font-bold text-[#111827]" : "text-[#657184] hover:bg-[#f7f8f9] hover:text-[#273142]"}`}
                   aria-current={active ? "page" : undefined}
                 >
@@ -445,19 +442,21 @@ export default function Reports() {
                   className="h-12 w-full rounded-full border-0 bg-white pl-12 pr-4 text-sm text-[#273142] shadow-sm outline-none placeholder:text-[#8a92a0] focus:ring-2 focus:ring-[#cbd2dc]"
                 />
               </label>
-              <button type="button" className="relative flex size-12 shrink-0 items-center justify-center rounded-full bg-white text-[#172033] shadow-sm" aria-label="Notifications">
+              <button type="button" className="relative flex size-12 shrink-0 items-center justify-center rounded-full bg-white text-[#172033] shadow-sm" aria-label="Notifications indisponibles" disabled title="Aucune source de notifications n’est configurée">
                 <Bell className="size-5" />
-                <span className="absolute right-[13px] top-[11px] size-2 rounded-full bg-[#e54747] ring-2 ring-white" />
+
               </button>
-              <button type="button" className="flex size-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#aa755d] to-[#30343a] text-sm font-bold text-white shadow-sm" aria-label="Compte administrateur">JD</button>
+              <button type="button" className="flex size-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#aa755d] to-[#30343a] text-sm font-bold text-white shadow-sm" aria-label="Compte administrateur indisponible" disabled title="Menu de compte non configuré">JD</button>
               <button type="button" className="hidden text-[#647184] hover:text-[#172033] sm:inline-flex" onClick={() => logoutMutation.mutate()} aria-label="Se déconnecter">
                 <LogOut className="size-4" />
               </button>
             </div>
           </header>
 
-          <div className="mt-6 flex flex-wrap gap-2">
-            {tabs.map(({ label, count }) => {
+          <p className="mt-3 text-xs text-[#7b8492]">Aperçu local : {reports.length} signalements; les changements de statut ne sont pas envoyés au serveur.</p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {tabs.map((label) => {
+              const count = label === "Tous" ? reports.length : label === "Nouveaux" ? reports.filter((r) => r.status === "Urgent" || r.status === "À traiter").length : label === "En cours" ? reports.filter((r) => r.status === "En cours").length : reports.filter((r) => r.status === "Résolu").length;
               const active = activeTab === label;
               return (
                 <button
@@ -544,7 +543,7 @@ export default function Reports() {
               </div>
             </section>
 
-            <aside className="overflow-visible rounded-2xl bg-white p-5 shadow-[0_8px_24px_rgba(24,35,52,0.04)] sm:p-6">
+            {filteredReports.length > 0 && <aside className="overflow-visible rounded-2xl bg-white p-5 shadow-[0_8px_24px_rgba(24,35,52,0.04)] sm:p-6">
               <div className="flex items-center justify-between border-b border-[#edf0f3] pb-4">
                 <h2 className="text-lg font-semibold tracking-[-0.03em] text-[#111827]">Détails du signalement</h2>
                 <div className="relative">
@@ -611,7 +610,7 @@ export default function Reports() {
                   <CheckCircle2 className="size-5" />Marquer comme résolu
                 </button>
               </div>
-            </aside>
+            </aside>}
           </div>
         </main>
       </div>

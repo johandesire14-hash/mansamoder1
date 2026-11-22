@@ -332,11 +332,9 @@ export default function Businesses() {
   const [statusFilter, setStatusFilter] = useState("Tous les statuts");
   const [mobileNav, setMobileNav] = useState(false);
   const [showDetails, setShowDetails] = useState(true);
-  const [currencyMenuOpen, setCurrencyMenuOpen] = useState(false);
   const [rowMenuId, setRowMenuId] = useState<string | null>(null);
   const [manageIntegrations, setManageIntegrations] = useState(false);
 
-  const selectedBusiness = businesses.find((business) => business.id === selectedId) ?? businesses[0];
   const filteredBusinesses = useMemo(() => {
     const normalizedQuery = searchQuery.trim().toLocaleLowerCase("fr");
     return businesses.filter((business) => {
@@ -345,11 +343,12 @@ export default function Businesses() {
       return matchesSearch && matchesStatus;
     });
   }, [businesses, searchQuery, statusFilter]);
+  const selectedBusiness = filteredBusinesses.find((business) => business.id === selectedId) ?? filteredBusinesses[0] ?? businesses[0];
 
   function updateBusinessStatus(businessId: string, status: BusinessStatus) {
     setBusinesses((current) => current.map((business) => business.id === businessId ? { ...business, status } : business));
     setRowMenuId(null);
-    toast.success(status === "Suspendue" ? "Entreprise suspendue" : "Entreprise réactivée");
+    toast.info("Statut modifié dans cet aperçu local uniquement; aucun changement serveur n’a été effectué.");
   }
 
   function chooseBusiness(businessId: string) {
@@ -373,7 +372,7 @@ export default function Businesses() {
             {navigation.map(({ label, icon: Icon, path }) => {
               const active = label === "Entreprises";
               return (
-                <button key={label} type="button" onClick={() => { setMobileNav(false); if (path) setLocation(path); }} className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium transition ${active ? "bg-[#eef0f2] font-bold text-[#111827]" : "text-[#657184] hover:bg-[#f7f8f9] hover:text-[#273142]"}`} aria-current={active ? "page" : undefined}>
+                <button key={label} type="button" disabled={!path} aria-disabled={!path} title={!path ? "Aucune route n’est disponible pour cette section" : undefined} onClick={() => { setMobileNav(false); if (path) setLocation(path); }} className={`flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm font-medium transition ${active ? "bg-[#eef0f2] font-bold text-[#111827]" : "text-[#657184] hover:bg-[#f7f8f9] hover:text-[#273142]"}`} aria-current={active ? "page" : undefined}>
                   <Icon className="size-[18px]" />{label}
                 </button>
               );
@@ -400,8 +399,8 @@ export default function Businesses() {
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <button type="button" className="relative flex size-11 items-center justify-center rounded-full bg-white text-[#172033] shadow-sm" aria-label="Notifications"><Bell className="size-5" /><span className="absolute right-[12px] top-[10px] size-2 rounded-full bg-[#e54747] ring-2 ring-white" /></button>
-              <button type="button" className="flex size-11 items-center justify-center rounded-full bg-gradient-to-br from-[#aa755d] to-[#30343a] text-sm font-bold text-white shadow-sm" aria-label="Compte administrateur">JD</button>
+              <button type="button" className="relative flex size-11 items-center justify-center rounded-full bg-white text-[#172033] shadow-sm" aria-label="Notifications indisponibles" disabled title="Aucune source de notifications n’est configurée"><Bell className="size-5" /></button>
+              <button type="button" className="flex size-11 items-center justify-center rounded-full bg-gradient-to-br from-[#aa755d] to-[#30343a] text-sm font-bold text-white shadow-sm" aria-label="Compte administrateur indisponible" disabled title="Menu de compte non configuré">JD</button>
               <button type="button" className="hidden text-[#647184] hover:text-[#172033] sm:inline-flex" onClick={() => logoutMutation.mutate()} aria-label="Se déconnecter"><LogOut className="size-4" /></button>
             </div>
           </header>
@@ -412,12 +411,7 @@ export default function Businesses() {
               <Search className="pointer-events-none absolute left-4 top-1/2 size-5 -translate-y-1/2 text-[#172033]" />
               <input value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder="Rechercher une entreprise ou un propriétaire..." aria-label="Rechercher une entreprise ou un propriétaire" className="h-11 w-full rounded-xl border border-[#edf0f3] bg-white pl-11 pr-4 text-sm text-[#273142] outline-none placeholder:text-[#929aa7] focus:ring-2 focus:ring-[#d8dde5]" />
             </label>
-            <div className="relative">
-              <button type="button" onClick={() => setCurrencyMenuOpen((open) => !open)} className="flex h-11 w-full items-center justify-between rounded-xl border border-[#edf0f3] bg-white px-4 text-sm text-[#273142]">
-                FCFA<ChevronDown className="size-4" />
-              </button>
-              {currencyMenuOpen && <div className="absolute left-0 top-12 z-20 w-48 rounded-xl border border-[#edf0f3] bg-white p-1.5 shadow-lg"><button type="button" onClick={() => setCurrencyMenuOpen(false)} className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm text-[#273142] hover:bg-[#f6f7f9]">Franc CFA (FCFA)<Check className="size-4 text-[#26945b]" /></button></div>}
-            </div>
+            <div className="flex h-11 items-center rounded-xl border border-[#edf0f3] bg-white px-4 text-sm text-[#273142]" aria-label="Devise des montants">FCFA</div>
             <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)} aria-label="Filtrer par statut" className="h-11 w-full appearance-none rounded-xl border border-[#edf0f3] bg-white px-4 pr-10 text-sm text-[#273142] outline-none focus:ring-2 focus:ring-[#d8dde5]">
               <option>Tous les statuts</option>
               <option>Active</option>
@@ -445,7 +439,7 @@ export default function Businesses() {
                   </thead>
                   <tbody>
                     {filteredBusinesses.map((business) => {
-                      const active = business.id === selectedId;
+                      const active = business.id === selectedBusiness.id;
                       return (
                         <tr key={business.id} onClick={() => chooseBusiness(business.id)} className={`cursor-pointer border-b border-[#edf0f3] transition hover:bg-[#f8f9fb] ${active ? "bg-[#f3f4f6]" : "bg-white"}`} aria-selected={active}>
                           <td className="px-3 py-3">
@@ -482,7 +476,7 @@ export default function Businesses() {
               </div>
             </section>
 
-            {showDetails && <aside className="relative min-w-0 overflow-hidden rounded-2xl bg-white shadow-[0_8px_24px_rgba(24,35,52,0.05)]">
+            {showDetails && filteredBusinesses.length > 0 && <aside className="relative min-w-0 overflow-hidden rounded-2xl bg-white shadow-[0_8px_24px_rgba(24,35,52,0.05)]">
               <button type="button" onClick={() => setShowDetails(false)} className="absolute right-4 top-4 z-10 rounded-full p-1.5 text-[#687386] hover:bg-[#f2f3f6]" aria-label="Fermer le détail"><X className="size-4" /></button>
               <div className="max-h-[calc(100vh-48px)] overflow-y-auto px-5 pb-5 pt-5 sm:px-6">
                 <div className="flex items-center gap-4 pr-7">
