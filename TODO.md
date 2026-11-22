@@ -19,7 +19,7 @@
 - [x] L’interface indique si le stockage navigateur fonctionne ou si les données ne pourront pas persister; aucun mot de passe, identifiant ou état utilisateur n’est sauvegardé dans `localStorage`.
 
 ## Interactions — première passe
-- [x] Le Dashboard met à jour ses indicateurs, la période affichée et le graphique lorsque l’administrateur choisit « Aujourd’hui », « Cette semaine » ou « Ce mois »; les sélecteurs du graphique basculent entre six et trente jours.
+- [x] Le Dashboard met à jour ses indicateurs, la période affichée et le graphique lorsque l’administrateur choisit « Aujourd’hui », « Cette semaine » ou « Ce mois » et la plage affichée suit le calendrier courant; les sélecteurs du graphique basculent entre six et trente jours.
 - [x] Le bouton « Tout voir » de la carte Priorités ouvre la file Signalements.
 - [x] Sur Paiements, la recherche de l’en-tête filtre les transactions, « Tout voir » efface la recherche et réinitialise le filtre, et le bouton d’action copie explicitement la référence au lieu de promettre une navigation inexistante.
 - [x] Sur Utilisateurs, la pagination n’affiche plus de pages fictives; les flèches sont désactivées car aucune source ne fournit les pages suivantes au-delà des profils affichés.

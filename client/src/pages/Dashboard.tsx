@@ -91,7 +91,20 @@ function MetricCard({
 type DashboardPeriod = "Aujourd’hui" | "Cette semaine" | "Ce mois";
 
 const periodFactors: Record<DashboardPeriod, number> = { "Aujourd’hui": 0.04, "Cette semaine": 0.24, "Ce mois": 1 };
-const periodRanges: Record<DashboardPeriod, string> = { "Aujourd’hui": "30 sept. 2024", "Cette semaine": "24 sept. 2024 - 30 sept. 2024", "Ce mois": "1 sept. 2024 - 30 sept. 2024" };
+function formatPeriodDate(date: Date) {
+  return new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short", year: "numeric" }).format(date);
+}
+
+function getPeriodRange(period: DashboardPeriod) {
+  const today = new Date();
+  if (period === "Aujourd’hui") return `Aujourd’hui, ${formatPeriodDate(today)}`;
+  if (period === "Cette semaine") {
+    const monday = new Date(today);
+    monday.setDate(today.getDate() - ((today.getDay() + 6) % 7));
+    return `${formatPeriodDate(monday)} - ${formatPeriodDate(today)}`;
+  }
+  return `${formatPeriodDate(new Date(today.getFullYear(), today.getMonth(), 1))} - ${formatPeriodDate(today)}`;
+}
 
 function scaleMetric(value: string, factor: number) {
   const amount = Number(value.replace(/[^0-9]/g, ""));
@@ -243,7 +256,7 @@ export default function Dashboard() {
             </div>
             <div className="relative">
               <button type="button" aria-expanded={periodMenuOpen} onClick={() => setPeriodMenuOpen((open) => !open)} className="flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-xs font-semibold text-[#273142] shadow-sm">
-                <CalendarDays className="size-3.5" />{periodRanges[period]}<ChevronDown className="size-3.5" />
+                <CalendarDays className="size-3.5" />{getPeriodRange(period)}<ChevronDown className="size-3.5" />
               </button>
               {periodMenuOpen && <div className="absolute right-0 z-20 mt-2 w-48 rounded-xl border border-[#e7eaed] bg-white p-1.5 shadow-xl">{(["Aujourd’hui", "Cette semaine", "Ce mois"] as DashboardPeriod[]).map((option) => <button key={option} type="button" onClick={() => { setPeriod(option); setPeriodMenuOpen(false); }} className="w-full rounded-lg px-3 py-2 text-left text-sm hover:bg-[#f5f6f7]">{option}</button>)}</div>}
             </div>
