@@ -76,7 +76,7 @@ const navigation = [
   { label: "Statistiques", icon: Activity },
   { label: "Journal d’activité", icon: Clock3, path: "/activity" },
   { label: "Sécurité & audit", icon: Shield },
-  { label: "Paramètres", icon: Settings },
+  { label: "Paramètres", icon: Settings, path: "/settings" },
 ];
 
 function StatusPill({ status }: { status: PaymentStatus }) {

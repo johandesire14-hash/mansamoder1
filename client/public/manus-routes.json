@@ -39,6 +39,10 @@
     {
       "path": "/verifications",
       "title": "Vérifications — Mansa Hub"
+    },
+    {
+      "path": "/settings",
+      "title": "Paramètres — Mansa Hub"
     }
   ]
 }

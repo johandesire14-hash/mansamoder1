@@ -2,7 +2,7 @@
 
 ## Périmètre du premier lot
 
-Construire un back-office séparé avec neuf écrans fonctionnels :
+Construire un back-office séparé avec dix écrans fonctionnels :
 
 1. une page de connexion réservée à l’équipe Mansa, avec adresse e-mail/mot de passe et bouton Google ;
 2. un Dashboard de modération inspiré de la maquette validée.
@@ -13,6 +13,7 @@ Construire un back-office séparé avec neuf écrans fonctionnels :
 7. une page Signalements réservée aux administrateurs, selon la maquette fournie : filtres par statut, recherche, liste récente des signalements et panneau de détails avec actions de traitement/résolution.
 8. une page Entreprises réservée aux administrateurs, selon la maquette fournie : recherche, filtres, indicateurs d’activité, tableau des entreprises et panneau de détails à onglets.
 9. une page Vérifications réservée aux administrateurs : indicateurs, filtres de demandes, liste avec documents et dossier sélectionné avec note interne et actions locales.
+10. une page Paramètres réservée aux administrateurs : règles de commissions et de conformité, maintenance, bannière de crise et sauvegarde conditionnée par un motif.
 
 Les identifiants de démonstration sont stockés uniquement dans les secrets `MANSAMOD_ADMIN_EMAIL` et `MANSAMOD_ADMIN_PASSWORD`. Aucune valeur sensible ne doit apparaître dans le dépôt, dans le bundle client, dans l’interface ou dans les logs.
 
@@ -27,7 +28,8 @@ Les identifiants de démonstration sont stockés uniquement dans les secrets `MA
 - `client/src/pages/Reports.tsx` : vue Signalements protégée, filtres et recherche, tableau récent et panneau de détail avec changements de statut en mémoire côté client.
 - `client/src/pages/Businesses.tsx` : liste filtrable des entreprises et panneau d’entreprise avec résumé/métriques, produits et dashboard financier; changements d’état en mémoire côté client.
 - `client/src/pages/Verifications.tsx` : file de demandes de vérification filtrable, pièces fournies, dossier détaillé et transitions locales approuver/demander des informations.
-- `client/src/App.tsx` : routes `/login`, `/dashboard`, `/payments`, `/users`, `/support`, `/activity`, `/reports`, `/businesses` et `/verifications`, protégées par le rôle administrateur et redirection contrôlée selon l’état de session.
+- `client/src/pages/Settings.tsx` : formulaire des règles opérationnelles, état de maintenance et bannière, aperçu en direct et validation de sauvegarde avec motif obligatoire, en mémoire côté client.
+- `client/src/App.tsx` : routes `/login`, `/dashboard`, `/payments`, `/users`, `/support`, `/activity`, `/reports`, `/businesses`, `/verifications` et `/settings`, protégées par le rôle administrateur et redirection contrôlée selon l’état de session.
 - `server/routers.ts` : procédures `auth.login`, `auth.me` et `auth.logout` ; login e-mail validé côté serveur.
 - `server/_core/context.ts` et `server/_core/sdk.ts` : session applicative réutilisant le cookie signé du starter.
 - `server/db.ts` et `server/_core/env.ts` : persistance du compte autorisé et lecture des secrets serveur.
@@ -68,6 +70,7 @@ Le Journal d’activité conserve ses sessions et événements de présentation 
 La page Signalements conserve ses enregistrements et changements de statut en mémoire côté client uniquement; aucun signalement n’est envoyé au serveur, sauvegardé en base ou persisté dans `localStorage`.
 La page Entreprises conserve ses enregistrements, connexions d’intégration affichées et changements de statut en mémoire côté client uniquement; aucune entreprise n’est envoyée au serveur, aucun service YouTube/Stripe n’est appelé, et aucune donnée n’est sauvegardée en base ou dans `localStorage`.
 La page Vérifications conserve les demandes, notes et transitions de statut en mémoire côté client; aucun document réel n’est téléchargé et aucune donnée n’est envoyée à un service externe ou sauvegardée en base/localStorage.
+La page Paramètres garde ses valeurs, brouillons et journal local en mémoire uniquement; aucun paramètre opérationnel réel n’est modifié sans backend autorisé.
 
 ## Sécurité
 

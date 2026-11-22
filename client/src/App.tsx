@@ -13,6 +13,7 @@ import ActivityLog from "./pages/ActivityLog";
 import Reports from "./pages/Reports";
 import Businesses from "./pages/Businesses";
 import Verifications from "./pages/Verifications";
+import SettingsPage from "./pages/Settings";
 
 function LoadingScreen() {
   return (
@@ -25,7 +26,7 @@ function LoadingScreen() {
   );
 }
 
-function AccessGuard({ page = "dashboard" }: { page?: "dashboard" | "payments" | "users" | "support" | "activity" | "reports" | "businesses" | "verifications" }) {
+function AccessGuard({ page = "dashboard" }: { page?: "dashboard" | "payments" | "users" | "support" | "activity" | "reports" | "businesses" | "verifications" | "settings" }) {
   const { user, loading } = useAuth();
 
   if (loading) return <LoadingScreen />;
@@ -50,6 +51,7 @@ function AccessGuard({ page = "dashboard" }: { page?: "dashboard" | "payments" |
   if (page === "reports") return <Reports />;
   if (page === "businesses") return <Businesses />;
   if (page === "verifications") return <Verifications />;
+  if (page === "settings") return <SettingsPage />;
   return <Dashboard />;
 }
 
@@ -86,6 +88,9 @@ function Router() {
       </Route>
       <Route path="/verifications">
         <AccessGuard page="verifications" />
+      </Route>
+      <Route path="/settings">
+        <AccessGuard page="settings" />
       </Route>
       <Route path="/" component={HomeRedirect} />
       <Route path="/404">
